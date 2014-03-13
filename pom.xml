@@ -8,6 +8,21 @@
     <artifactId>atelier-mongodb</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <description>
+        Projet utilisé pour le Hand's On Labs "{ développeur: "viens découvrir mongoDB"}" de Devoxx France 2014
+    </description>
+
+    <contributors>
+        <contributor>
+            <name>David Wursteisen</name>
+        </contributor>
+        <contributor>
+            <name>Katia Aresti</name>
+        </contributor>
+        <contributor>
+            <name>Tugdual Grall</name>
+        </contributor>
+    </contributors>
 
     <dependencies>
 
