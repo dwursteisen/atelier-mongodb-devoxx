@@ -1,10 +1,16 @@
 package com.github.mongo.labs;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
+
+import java.io.File;
 
 
 /**
@@ -23,13 +29,15 @@ import org.glassfish.jersey.servlet.ServletContainer;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        Server server = new Server(8080);
 
         ServletHolder sh = new ServletHolder(ServletContainer.class);
         sh.setInitParameter(ServerProperties.PROVIDER_PACKAGES, "com.github.mongo.labs.api");// Set the package where the services reside
 
-        Server server = new Server(8080);
         ServletContextHandler context = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS);
-        context.addServlet(sh, "/*");
+        context.setResourceBase(new File(Main.class.getResource("/static").toURI()).getAbsolutePath());
+        context.addServlet(sh, "/api/*");
+        context.addServlet(DefaultServlet.class, "/*");
         server.start();
         server.join();
     }
