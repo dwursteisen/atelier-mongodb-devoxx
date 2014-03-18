@@ -5,13 +5,15 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.net.UnknownHostException;
 
 import com.github.mongo.labs.model.Talk;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
@@ -28,7 +30,9 @@ import org.jongo.MongoCollection;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@Api(value = "/talks", description = "Operations about talks")
 @Path("/talks")
+@Produces(MediaType.APPLICATION_JSON)
 public class TalksService {
 
     private MongoCollection collection;
@@ -41,20 +45,23 @@ public class TalksService {
 
     @GET
     @Path("/all")
-    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Retourne tous les talks", notes = "More notes about this method")
     public Iterable<Talk> all() {
         return collection.find().as(Talk.class);
     }
 
     @GET
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@PathParam("id") String id) {
+    @ApiOperation(
+            value = "Retrouve un talk par son identifiant (ex: MX-456)",
+            notes = "le service retourne un code 404 si non trouvé",
+            response = Talk.class)
+    public Talk get(@PathParam("id") String id) {
         Talk talk = collection.findOne("{_id: #}", id).as(Talk.class);
         if (talk == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new WebApplicationException(404);
         }
-        return Response.ok(talk).build();
+        return talk;
     }
 
 }
