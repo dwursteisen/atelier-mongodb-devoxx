@@ -53,7 +53,7 @@ public class TalksService {
     @GET
     @Path("/{id}")
     @ApiOperation(
-            value = "Retrouve un talk par son identifiant (ex: MX-456)",
+            value = "Retrouve un talk par son identifiant (ex: XWC-772)",
             notes = "le service retourne un code 404 si non trouvé",
             response = Talk.class)
     public Talk get(@PathParam("id") String id) {
