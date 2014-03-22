@@ -1,5 +1,9 @@
 # Created by http://www.gitignore.io
 
+# local repository
+repository
+
+
 ### OSX ###
 .DS_Store
 .AppleDouble

@@ -6,6 +6,16 @@ Dans cet atelier pratique, ludique et dynamique : Vous, développeur Java, venez
 
 On partira du shell, on passera à l'utilisation de drivers MongoDB en Java, puis on intégrera l'ensemble dans un site web.
 
+Création du repository local pour accès offline
+---
+
+    mvn clean install -Dmaven.local.repository=./repository
+
+les dependencies seront téléchargées (même si vous les avez déjà dans votre repository local)
+Lors d'un lancement offline, c'est ce repository qui sera utilisé (cf configuration repository pom.xml)
+__Attention :__ La surcharge du repository maven central est en commentaire ! Il faut décommenter pour
+que maven évite de taper le central online.
+
 Requirements
 ----
 
