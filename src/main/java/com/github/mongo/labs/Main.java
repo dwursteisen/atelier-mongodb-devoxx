@@ -29,7 +29,8 @@ public class Main {
         Server server = new Server(8080);
 
         ServletHolder sh = new ServletHolder(ServletContainer.class);
-        sh.setInitParameter(ServerProperties.PROVIDER_PACKAGES, "com.github.mongo.labs.api");// Set the package where the services reside
+        // Set the package where the services reside
+        sh.setInitParameter(ServerProperties.PROVIDER_PACKAGES, "com.github.mongo.labs.api, com.github.mongo.labs.helper");
         sh.setInitOrder(1); // force loading at startup
 
         initSwagger();
