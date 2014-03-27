@@ -1,14 +1,5 @@
 package com.github.mongo.labs.api;
 
-import javax.annotation.PostConstruct;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import java.net.UnknownHostException;
-
 import com.github.mongo.labs.model.Talk;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
@@ -16,6 +7,11 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
+
+import javax.annotation.PostConstruct;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.net.UnknownHostException;
 
 /**
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +26,7 @@ import org.jongo.MongoCollection;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@Api(value = "/talks", description = "Operations about talks")
+@Api(value = "/talks", description = "Recherche de talks")
 @Path("/talks")
 @Produces(MediaType.APPLICATION_JSON)
 public class TalksService {
@@ -44,8 +40,8 @@ public class TalksService {
     }
 
     @GET
-    @Path("/all")
-    @ApiOperation(value = "Retourne tous les talks", notes = "More notes about this method")
+    @Path("/")
+    @ApiOperation(value = "Retourne tous les talks")
     public Iterable<Talk> all() {
         return collection.find().as(Talk.class);
     }
