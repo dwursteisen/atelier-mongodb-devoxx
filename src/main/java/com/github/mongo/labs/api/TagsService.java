@@ -15,14 +15,20 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Tag;
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import org.jongo.Jongo;
+import org.jongo.MongoCollection;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.net.UnknownHostException;
 
 
 @Api(value = "/tags", description = "Consultation de tags")
@@ -31,12 +37,26 @@ import javax.ws.rs.core.MediaType;
 @Singleton
 public class TagsService {
 
+
+    private MongoCollection collection;
+
+    @PostConstruct
+    public void init() throws UnknownHostException {
+        DB db = new MongoClient("localhost").getDB("devoxx");
+        collection = new Jongo(db).getCollection("talks");
+    }
+
     @GET
     @Path("/")
     @ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associés",
             notes = "Le framework d'aggrégation doit être utilisé pour remonter les bonnes données"
     )
     public Iterable<Tag> all() {
-        return null;
+        return collection.aggregate("{$project: {tags: 1}}")
+                .and("{$unwind: '$tags'}")
+                .and("{$project: {tags: {$toLower: '$tags'}}}")
+                .and("{$group: {_id: '$tags', count: {$sum:  1}}}")
+                .and("{$sort: {count: -1}}")
+                .as(Tag.class);
     }
 }

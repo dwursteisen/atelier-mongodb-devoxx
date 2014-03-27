@@ -22,4 +22,7 @@ package com.github.mongo.labs.model;
  * To change this template use File | Settings | File Templates.
  */
 public class Tag {
+
+    public String _id;
+    public int count;
 }

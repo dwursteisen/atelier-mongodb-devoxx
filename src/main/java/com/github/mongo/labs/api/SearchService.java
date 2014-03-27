@@ -20,7 +20,6 @@ import com.mongodb.MongoClient;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.jongo.Jongo;
-import org.jongo.MongoCollection;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
@@ -39,12 +38,12 @@ import java.util.List;
 @Singleton
 public class SearchService {
 
-    private MongoCollection collection;
+    private Jongo jongo;
 
     @PostConstruct
     public void init() throws UnknownHostException {
         DB db = new MongoClient("localhost").getDB("devoxx");
-        collection = new Jongo(db).getCollection("$cmd");
+        jongo = new Jongo(db);
     }
 
     @GET
@@ -55,7 +54,7 @@ public class SearchService {
                     "<b>mongod --setParameter textSearchEnabled=true</b>"
     )
     public Iterable<Talk> search(@PathParam("term") String term) {
-        Output output = collection.findOne("{text: 'talks', search: #, limit: 5}", term).as(Output.class);
+        Output output = jongo.runCommand("{text: 'talks', search: #, limit: 5}", term).as(Output.class);
         List<Talk> result = new ArrayList<Talk>();
 
         if (output == null) {
