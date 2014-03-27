@@ -14,6 +14,7 @@
 
 package com.github.mongo.labs.helper;
 
+import com.github.mongo.labs.Main;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
@@ -39,6 +40,9 @@ public class MongoQueryService {
 
     @PostConstruct
     public void init() throws UnknownHostException {
+
+        Main.initMongoProfiling();
+
         DB db = new MongoClient("localhost").getDB("devoxx");
 
         Jongo jongo = new Jongo(db);

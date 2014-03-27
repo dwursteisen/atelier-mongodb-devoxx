@@ -53,17 +53,21 @@ public class Main {
         server.join();
     }
 
-    private static void initMongoProfiling() throws Exception {
-        DB db = new MongoClient("localhost").getDB("devoxx");
-        Jongo jongo = new Jongo(db);
+    public static void initMongoProfiling() {
+        try {
+            DB db = new MongoClient("localhost").getDB("devoxx");
+            Jongo jongo = new Jongo(db);
 
-        ResultCmd r = jongo.getCollection("$cmd")
-                .withWriteConcern(WriteConcern.SAFE)
-                .findOne("{profile: 1, slowms: 1}")
-                .as(ResultCmd.class);// log event fast query
+            ResultCmd r = jongo.getCollection("$cmd")
+                    .withWriteConcern(WriteConcern.SAFE)
+                    .findOne("{profile: 1, slowms: 1}")
+                    .as(ResultCmd.class);// log event fast query
 
 
-        System.err.println("profiling =" + r);
+            System.err.println("profiling =" + r);
+        } catch (Exception ex) {
+            System.err.println("profiling = not enabled");
+        }
     }
 
     private static void initSwagger() {
