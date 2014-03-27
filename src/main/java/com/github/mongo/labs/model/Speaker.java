@@ -14,15 +14,27 @@
 
 package com.github.mongo.labs.model;
 
+import org.bson.types.ObjectId;
+
 public class Speaker {
 
-    private String name;
+    private ObjectId _id;
+    private Name name;
 
-    public String getName() {
+    public Name getName() {
         return name;
     }
 
-    public void setName(final String name) {
+    public void setName(Name name) {
         this.name = name;
+    }
+
+    public String getId() {
+        return _id.toStringMongod();
+    }
+
+    public static class Name {
+        public String lastName;
+        public String firstName;
     }
 }

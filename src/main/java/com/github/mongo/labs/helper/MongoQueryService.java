@@ -14,7 +14,6 @@
 
 package com.github.mongo.labs.helper;
 
-import com.github.mongo.labs.api.TalksService;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
@@ -23,6 +22,7 @@ import org.jongo.MongoCollection;
 import org.jongo.RawResultHandler;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -32,9 +32,9 @@ import java.util.Iterator;
 
 @Path("/query")
 @Produces(MediaType.APPLICATION_JSON)
+@Singleton
 public class MongoQueryService {
 
-    private final TalksService talks = new TalksService();
     private MongoCollection collection;
 
     @PostConstruct

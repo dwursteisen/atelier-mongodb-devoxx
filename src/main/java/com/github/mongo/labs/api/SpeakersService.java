@@ -18,6 +18,7 @@ import com.github.mongo.labs.model.Speaker;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
+import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -25,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 @Api(value = "/speakers", description = "Gestion des speakers (recherche, m-a-j, etc)")
 @Path("/speakers")
 @Produces(MediaType.APPLICATION_JSON)
+@Singleton
 public class SpeakersService {
 
     @GET

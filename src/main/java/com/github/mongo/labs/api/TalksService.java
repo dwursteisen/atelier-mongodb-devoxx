@@ -23,6 +23,7 @@ import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.net.UnknownHostException;
@@ -30,6 +31,7 @@ import java.net.UnknownHostException;
 @Api(value = "/talks", description = "Recherche de talks")
 @Path("/talks")
 @Produces(MediaType.APPLICATION_JSON)
+@Singleton
 public class TalksService {
 
     private MongoCollection collection;

@@ -18,6 +18,7 @@ import com.github.mongo.labs.model.Talk;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -27,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 @Api(value = "/search", description = "Recherche fulltext")
 @Path("/search")
 @Produces(MediaType.APPLICATION_JSON)
+@Singleton
 public class SearchService {
 
     @GET

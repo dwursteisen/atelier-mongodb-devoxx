@@ -26,29 +26,29 @@
 
     <!-- Surcharge du repository maven central -->
     <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>central</id>-->
-            <!--<url>file://${project.basedir}/repository</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
+    <!--<repository>-->
+    <!--<id>central</id>-->
+    <!--<url>file://${project.basedir}/repository</url>-->
+    <!--<releases>-->
+    <!--<enabled>true</enabled>-->
+    <!--</releases>-->
+    <!--<snapshots>-->
+    <!--<enabled>true</enabled>-->
+    <!--</snapshots>-->
+    <!--</repository>-->
     <!--</repositories>-->
 
     <!--<pluginRepositories>-->
-        <!--<pluginRepository>-->
-            <!--<id>central</id>-->
-            <!--<url>file://${project.basedir}/repository</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</pluginRepository>-->
+    <!--<pluginRepository>-->
+    <!--<id>central</id>-->
+    <!--<url>file://${project.basedir}/repository</url>-->
+    <!--<releases>-->
+    <!--<enabled>true</enabled>-->
+    <!--</releases>-->
+    <!--<snapshots>-->
+    <!--<enabled>true</enabled>-->
+    <!--</snapshots>-->
+    <!--</pluginRepository>-->
     <!--</pluginRepositories>-->
 
     <dependencies>
@@ -58,6 +58,13 @@
             <artifactId>jetty-webapp</artifactId>
             <version>${jetty.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
