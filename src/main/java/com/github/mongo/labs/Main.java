@@ -14,6 +14,9 @@
 
 package com.github.mongo.labs;
 
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.WriteConcern;
 import com.wordnik.swagger.config.ScannerFactory;
 import com.wordnik.swagger.jaxrs.config.BeanConfig;
 import com.wordnik.swagger.servlet.config.ServletScanner;
@@ -24,6 +27,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.jongo.Jongo;
 
 import java.io.File;
 
@@ -38,6 +42,7 @@ public class Main {
         sh.setInitOrder(1); // force loading at startup
 
         initSwagger();
+        initMongoProfiling();
 
         ServletContextHandler context = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS);
         context.setResourceBase(new File(Main.class.getResource("/static").toURI()).getAbsolutePath());
@@ -48,6 +53,19 @@ public class Main {
         server.join();
     }
 
+    private static void initMongoProfiling() throws Exception {
+        DB db = new MongoClient("localhost").getDB("devoxx");
+        Jongo jongo = new Jongo(db);
+
+        ResultCmd r = jongo.getCollection("$cmd")
+                .withWriteConcern(WriteConcern.SAFE)
+                .findOne("{profile: 1, slowms: 1}")
+                .as(ResultCmd.class);// log event fast query
+
+
+        System.err.println("profiling =" + r);
+    }
+
     private static void initSwagger() {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.0");
@@ -56,6 +74,21 @@ public class Main {
         ServletScanner scanner = new ServletScanner();
         scanner.setResourcePackage("com.github.mongo.labs.api");
         ScannerFactory.setScanner(scanner);
+    }
+
+    public static class ResultCmd {
+        public String was;
+        public int slowms;
+        public int ok;
+
+        @Override
+        public String toString() {
+            return "ResultCmd{" +
+                    "was='" + was + '\'' +
+                    ", slowms=" + slowms +
+                    ", ok=" + ok +
+                    '}';
+        }
     }
 
 }

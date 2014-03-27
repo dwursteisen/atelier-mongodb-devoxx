@@ -42,9 +42,8 @@ public class MongoQueryService {
         DB db = new MongoClient("localhost").getDB("devoxx");
 
         Jongo jongo = new Jongo(db);
-        jongo.runCommand("{profile: 1, slowms: 1}"); // log event fast query
-
         collection = jongo.getCollection("system.profile");
+
     }
 
     @GET
