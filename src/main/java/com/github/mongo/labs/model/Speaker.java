@@ -20,6 +20,8 @@ public class Speaker {
 
     private ObjectId _id;
     private Name name;
+    private String bio;
+    private Geo geo;
 
     public Name getName() {
         return name;
@@ -36,5 +38,10 @@ public class Speaker {
     public static class Name {
         public String lastName;
         public String firstName;
+    }
+
+    public static class Geo {
+        public double longitude;
+        public double latitude;
     }
 }

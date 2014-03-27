@@ -15,12 +15,19 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Speaker;
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import org.bson.types.ObjectId;
+import org.jongo.Jongo;
+import org.jongo.MongoCollection;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.net.UnknownHostException;
 
 
 @Api(value = "/speakers", description = "Gestion des speakers (recherche, m-a-j, etc)")
@@ -29,11 +36,20 @@ import javax.ws.rs.core.MediaType;
 @Singleton
 public class SpeakersService {
 
+
+    private MongoCollection collection;
+
+    @PostConstruct
+    public void init() throws UnknownHostException {
+        DB db = new MongoClient("localhost").getDB("devoxx");
+        collection = new Jongo(db).getCollection("speakers");
+    }
+
     @GET
     @Path("/")
     @ApiOperation(value = "Retourne tous les speakers présent à Devoxx")
     public Iterable<Speaker> all() {
-        return null;
+        return collection.find().as(Speaker.class);
     }
 
     @GET
@@ -42,7 +58,16 @@ public class SpeakersService {
             notes = "le service retourne un code 404 si non trouvé"
     )
     public Speaker get(@PathParam("id") String id) {
-        return null;
+        return collection.findOne(new ObjectId(id)).as(Speaker.class);
+    }
+
+    @GET
+    @Path("/byname/{lastName}")
+    @ApiOperation(value = "Retrouve un speaker par son nom (ex: 'Aresti')",
+            notes = "le service retourne un code 404 si non trouvé"
+    )
+    public Speaker getByName(@PathParam("lastName") String lastName) {
+        return collection.findOne("{'name.lastName': {$regex: #}}", "^" + lastName).as(Speaker.class);
     }
 
     @PUT
