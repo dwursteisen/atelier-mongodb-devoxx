@@ -60,7 +60,7 @@ public class Main {
 
             ResultCmd r = jongo.getCollection("$cmd")
                     .withWriteConcern(WriteConcern.SAFE)
-                    .findOne("{profile: 1, slowms: 1}")
+                    .findOne("{profile: 2}")
                     .as(ResultCmd.class);// log event fast query
 
 
