@@ -51,7 +51,7 @@
     </div>
 
     <div class="container">
-	  <h1>1. Boostrap MongoDB</h1>
+	  <h1>Boostrap MongoDB</h1>
 	   
 	  <section id="installation">
 	      <h2>1. Installation et démarrage</h1>
@@ -76,15 +76,13 @@
 					<pre>
 					> var sayHello = "Hello Mongo"
 					> sayHello
-					Hello Mongo
-					</pre>
+					Hello Mongo</pre>
 	  	  		</li>
 	  	  		
 	  	  		<li>Explore l'objet "db" 
 	  	  			<pre>
 					> db
-					> db.help()
-					</pre>
+					> db.help()</pre>
 	  	  		</li>
 	  	  		
 	  	  		<li>Création d'une base de données</li>
@@ -105,6 +103,46 @@
 	  </section>
 	  <section id="crud-simple">
 	  	  <h2>3. CRUD simple</h1>
+	  	  <ul style="list-style: decimal;">
+	  	  	<li>Insertion d'un document</li>
+	  	  	<code>
+	  	  	db.things.insert({"_id" : "123", "name" : "table", "size" : 12, date : new Date()})
+	  	  	</code>
+	  	  	<li>Find by Id</li>
+	  	  	<code>db.things.findOne("123")</code><br/>
+	  	  	<code>db.things.find({"_id" : "123"})</code>
+	  	  	<li>Suppression de tous les documents de la collection things de taille 12</li>
+	  	  	<code>db.things.remove({size : 12})</code>
+	  	  	<li>Suppression de tous les documents de la collection things</li>
+	  	  	<code>db.things.remove()</code>
+	  	  	
+	  	  	<li>Comprendre l'update. Assurez vous que la collection things est vide. Executez et observez pas par pas.</li>
+	  	  	<pre>
+	  	  	// Insertion des 10
+	  	  	for(var i= 0; i<10; i++){
+	  	  		db.things.insert({"name" : "table", "size" : 12, date : new Date()});
+	  	  	}
+	  	  	
+	  	  	db.things.find()
+	  	  	
+	  	  	Testez :
+	  	  	
+	  	  	db.things.update({name : "table"}, {$set : {date : null}})
+	  	  	
+	  	  	Ensuite avec "multi" à true : 
+	  	  	
+	  	  	db.things.update({name : "table"}, {$set : {date : null}}, false, true)
+	  	  	db.things.find()
+	  	  	
+	  	  	Ensuite faites un update d'un document avec le nom "chaise" :
+	  	  	db.things.update({name : "chaise"}, {$set : {date : new Date()}}, false, false)
+	  	  	db.things.find()
+	  	  	
+	  	  	Faites le même update avec "upsert" à true :
+	  	  	db.things.update({name : "chaise"}, {$set : {date : new Date()}}, true, false)
+	  	  	</pre>
+	  	  	
+	  	  </ul>
 	  </section>
       <section id="restorer-base-devoxx">
 	      <h2>4. Restorer une base de données depuis un dump</h1>
@@ -135,7 +173,7 @@
 	  	  </ul>
 	  </section>
 	  <section id="recherche-base-devoxx">
-	      <h2>5. Recherche sur la base de donées Devoxx</h2>
+	      <h2>5. Recherche sur la base de données Devoxx</h2>
 	      <ul style="list-style: decimal;">
 	      	  
 	      	  <div class="alert alert-warn">Utilisez <strong>explain</strong> pour avoir l'information sur vos queries. Exemple : db.talks.find({"tags" : "java"}).explain()</div>
@@ -150,14 +188,18 @@
 		      <code>db.talks.find(/query ici/)</code>
 
 		      <li>Recherchez les talks qui contiennent le mot "NoSQL" dans la description. </li>
+		      
 		      <div class="alert alert-info">Tip : pour cette recherche on a besoin d'une expression regulière. Testez "NoSQL" et ensuite /NoSQL/ dans la valeur de la query</div>
 		      <li>Recherchez toutes les valeurs distinct des tags. Utilisez "distinct"</li>
+		      
+		      <li>Recherchez en limitant à 5 les talks de type "Conference" en langue française triés par ordre alphabetique du titre. N'affichez que le titre et l'id dans la console</li>
+		      <div class="alert alert-info"> Tip : Utilisez l'aide db.talks.help()</div>
 		      
 	      </ul>
 	      
 	  </section>
 	  <section id="recherche-avancee">
-	      <h2>6. Recherche avancée sur la base de donées : Le Framework d'aggregation</h2>
+	      <h2>6. Recherche avancée sur la base de données : Le Framework d'aggregation</h2>
 	      
 	      <h2>7. Recherche Géospatial</h2>
 	  </section>
