@@ -1,5 +1,6 @@
 # Created by http://www.gitignore.io
-
+.classpath
+.project
 # local repository
 repository
 

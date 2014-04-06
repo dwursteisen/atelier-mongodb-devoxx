@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)http://getbootstrap.com/2.3.2/examples/starter-template.html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Bootstrap, from Twitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="http://getbootstrap.com/2.3.2/assets/ico/favicon.png">
+  <style type="text/css"></style></head>
+
+  <body cz-shortcut-listen="true">
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="http://getbootstrap.com/2.3.2/examples/starter-template.html#">
+          	{"Développeur" : "Viens découvrir MongoDB"}
+          </a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+	  <h1>1. Boostrap MongoDB</h1>
+	   
+	  <section id="installation">
+	      <h2>1. Installation et démarrage</h1>
+	  	  <ul style="list-style: decimal;">
+	  	  		<li>Décompresser le fichier fourni dans le repertoire d'installation</li>
+	  	  		<li>Créer le répertoire pour stocker la data</li>
+	  	  		<code>/Users/duchess/dbdata</code>
+	  	  		<li>Démarrer la base de données</li>
+	  	  		<code>Sur MAC 
+	  	  			./mongod --dbpath /Users/duchess/dbdata --rest
+	  	  		</code>
+	  	  		<li>Allez sur http://localhost:28017/</li>
+	  	  </ul>
+	  </section>
+	  
+	  <section id="quick-shell">
+	      <h2>2. Découverte du Shell</h1>
+	  	  <ul style="list-style: decimal;">
+	  	  		<li>Démarrer le shell</li>
+	  	  		<code>Sur MAC ./mongo</code>
+	  	  		<li>Le shell est JavaScript
+					<pre>
+					> var sayHello = "Hello Mongo"
+					> sayHello
+					Hello Mongo
+					</pre>
+	  	  		</li>
+	  	  		
+	  	  		<li>Explore l'objet "db" 
+	  	  			<pre>
+					> db
+					> db.help()
+					</pre>
+	  	  		</li>
+	  	  		
+	  	  		<li>Création d'une base de données</li>
+	  	  		<code>ex : use Duchess </code>
+	  	  		
+	  	  		<li>Insérer un document dans la collection things dans la base de données créée. Un idéntifinat unique sera créé pour toi. ObjectID</li>
+	  	  		<code>ex : db.things.insert({"name" : "table"}) </code>
+	  	  		
+	  	  		<li>Lister un document avec findOne</li>
+	  	  		<code>ex : db.things.findOne()</code>
+	  	  		
+	  	  		<li>Lister toutes les bases de données</li>
+	  	  		<code>show dbs</code>
+	  	  </ul>
+	  </section>
+	  <section id="crud-simple">
+	  	  <h2>3. CRUD simple</h1>
+	  </section>
+      <section id="restorer-base-devoxx">
+	      <h2>4. Restorer une base de données depuis un dump</h1>
+	  	  <ul style="list-style: decimal;">
+	  	  		<li>Dans le repertoire du projet, le dump de la base de données se trouve sous le repertoire "data".</li>
+	  	  		<code>atelier-mongodb-devoxx/data</code>
+	  	  		<li>Utiliser MongoRestore pour restorer la base de données.</li>
+	  	  		<code>./mongorestore /{VOTRE_PATH}/atelier-mongodb-devoxx/data/devoxx</code>
+	  	  		<li>Dans le shell, lister les bases de données</li>
+	  	  		<Li>Dans le shell, lister les collections de la base de données qu'on vient d'importer : devoxx</li>
+	  	  		<code>db.getCollectionNames()</code></h2>
+	  	  		<li>Dans le shell, lister des speakers</li>
+	  	  		<code>db.speakers.find().pretty()</code>
+	  	  		<pre>
+{
+	"name" : {
+		"lastName" : "Regnier",
+		"firstName" : "Alain"
+	},
+	"bio" : "Architecte Technique et Entrepreneur passionné d&#x27;innovation",
+	"geo" : {
+		"longitude" : 48.843,
+		"latitude" : 2.4484
+	},
+	"_id" : ObjectId("5325b07884ae2fdd99aa3dc3")
+}
+	 			</pre>
+	  	  </ul>
+	  </section>
+	  <section id="restorer-base-devoxx">
+	      <h2>5. Recherche sur la base de donées Devoxx</h2>
+	  </section>
+	  <section id="recherche-avancee">
+	      <h2>6. Recherche avancée sur la base de donées Devoxx</h2>
+	  </section>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./Bootstrap, from Twitter_files/jquery.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-transition.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-alert.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-modal.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-dropdown.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-scrollspy.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-tab.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-tooltip.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-popover.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-button.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-collapse.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-carousel.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-typeahead.js"></script>
+
+  
+
+</body></html>
