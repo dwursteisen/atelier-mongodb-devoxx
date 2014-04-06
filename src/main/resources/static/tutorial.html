@@ -2,7 +2,7 @@
 <!-- saved from url=(0060)http://getbootstrap.com/2.3.2/examples/starter-template.html -->
 <html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>Viens découvrir MongoDB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -98,6 +98,9 @@
 	  	  		
 	  	  		<li>Lister toutes les bases de données</li>
 	  	  		<code>show dbs</code>
+	  	  		
+	  	  		<li>Qu'est-ce qu'on peut faire sur une collection ?</li>
+	  	  		<code>db.thins.help()</code>
 	  	  </ul>
 	  </section>
 	  <section id="crud-simple">
@@ -133,12 +136,30 @@
 	  </section>
 	  <section id="recherche-base-devoxx">
 	      <h2>5. Recherche sur la base de donées Devoxx</h2>
-	      <li>Combien de speakers ?</li>
-	      <code>db.speakers.count()</code>
-	      <h2>Find </h2>
+	      <ul style="list-style: decimal;">
+	      	  
+	      	  <div class="alert alert-warn">Utilisez <strong>explain</strong> pour avoir l'information sur vos queries. Exemple : db.talks.find({"tags" : "java"}).explain()</div>
+	      	  
+	      	  <li>Combien de speakers ?</li>
+		      <code>db.speakers.count()</code>
+		      
+		      <li>Recherchez les speakers qui s'appelent Julien. Il en a 4 !</li>
+		      <code>db.speakers.find(/query ici/)</code>
+
+		      <li>Recherchez les talks du speaker avec le nom famille "Wursteisen" </li>
+		      <code>db.talks.find(/query ici/)</code>
+
+		      <li>Recherchez les talks qui contiennent le mot "NoSQL" dans la description. </li>
+		      <div class="alert alert-info">Tip : pour cette recherche on a besoin d'une expression regulière. Testez "NoSQL" et ensuite /NoSQL/ dans la valeur de la query</div>
+		      <li>Recherchez toutes les valeurs distinct des tags. Utilisez "distinct"</li>
+		      
+	      </ul>
+	      
 	  </section>
 	  <section id="recherche-avancee">
 	      <h2>6. Recherche avancée sur la base de donées : Le Framework d'aggregation</h2>
+	      
+	      <h2>7. Recherche Géospatial</h2>
 	  </section>
     </div> <!-- /container -->
 
