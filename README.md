@@ -19,8 +19,12 @@ que maven évite de taper le central online.
 Requirements
 ----
 
-- Java
+- Java 7
 - Maven 3
 - Mongo 2.6
 - Maven
 - git
+
+Lancer le serveur
+----
+mvn exec:java -Dexec.mainClass="com.github.mongo.labs.Main"
