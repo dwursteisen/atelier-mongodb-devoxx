@@ -1,5 +1,8 @@
 package com.github.mongo.labs.api;
 
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import org.jongo.Jongo;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +16,9 @@ public class TagsServiceTest {
     @Before
     public void setUp() throws Exception {
         service = new TagsService();
-        service.init();
+
+        DB db = new MongoClient("localhost").getDB("devoxx");
+        service.setCollection(new Jongo(db).getCollection("talks"));
     }
 
     @Test

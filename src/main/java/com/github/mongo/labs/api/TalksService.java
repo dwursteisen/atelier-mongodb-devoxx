@@ -16,21 +16,19 @@ package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Talk;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.net.UnknownHostException;
 
 @Api(value = "/talks", description = "Recherche de talks")
 @Path("/talks")
@@ -38,15 +36,9 @@ import java.net.UnknownHostException;
 @Singleton
 public class TalksService {
 
+    @Named("mongo/speakers")
+    @Inject
     private DBCollection dbCollection;
-
-
-    @PostConstruct
-    public void init() throws UnknownHostException {
-        DB db = new MongoClient("localhost").getDB("devoxx");
-        dbCollection = db.getCollection("talks");
-
-    }
 
     @GET
     @Path("/")

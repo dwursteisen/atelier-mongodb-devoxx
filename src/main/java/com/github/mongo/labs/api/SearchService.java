@@ -15,22 +15,18 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Talk;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
+import com.mongodb.DBCollection;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import org.jongo.Jongo;
 
-import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Api(value = "/search", description = "Recherche fulltext")
 @Path("/search")
@@ -38,13 +34,10 @@ import java.util.List;
 @Singleton
 public class SearchService {
 
-    private Jongo jongo;
+    @Named("jongo/speakers")
+    @Inject
+    private DBCollection dbCollection;
 
-    @PostConstruct
-    public void init() throws UnknownHostException {
-        DB db = new MongoClient("localhost").getDB("devoxx");
-        jongo = new Jongo(db);
-    }
 
     @GET
     @Path("/{term}")
@@ -54,27 +47,8 @@ public class SearchService {
                     "<b>mongod --setParameter textSearchEnabled=true</b>"
     )
     public Iterable<Talk> search(@PathParam("term") String term) {
-        Output output = jongo.runCommand("{text: 'talks', search: #, limit: 5}", term).as(Output.class);
-        List<Talk> result = new ArrayList<Talk>();
-
-        if (output == null) {
-            return result;
-        }
-
-        for (Result r : output.results) {
-            result.add(r.obj);
-        }
-        return result;
+        return null;
     }
 
 
-    public static class Output {
-        private Iterable<Result> results;
-
-    }
-
-    public static class Result {
-        public double score;
-        public Talk obj;
-    }
 }

@@ -15,21 +15,18 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Speaker;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
-import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.net.UnknownHostException;
 
 @Api(value = "/geo", description = "Recherche géolocalisé")
 @Path("/geo")
@@ -37,14 +34,9 @@ import java.net.UnknownHostException;
 @Singleton
 public class GeoService {
 
+    @Named("jongo/speakers")
+    @Inject
     private MongoCollection collection;
-
-    @PostConstruct
-    public void init() throws UnknownHostException {
-        DB db = new MongoClient("localhost").getDB("devoxx");
-        collection = new Jongo(db).getCollection("speakers");
-    }
-
 
     @GET
     @Path("/{longitude}/{latitude}")

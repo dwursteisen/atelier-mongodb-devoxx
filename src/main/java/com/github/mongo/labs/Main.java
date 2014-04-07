@@ -14,6 +14,7 @@
 
 package com.github.mongo.labs;
 
+import com.github.mongo.labs.helper.MongoBinder;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
@@ -52,6 +53,8 @@ public class Main {
         ServletHolder sh = new ServletHolder(ServletContainer.class);
         // Set the package where the services reside
         sh.setInitParameter(ServerProperties.PROVIDER_PACKAGES, "com.github.mongo.labs.api, com.github.mongo.labs.helper");
+        // @inject configuration
+        sh.setInitParameter("javax.ws.rs.Application", MongoBinder.class.getName());
         sh.setInitOrder(1); // force loading at startup
 
         initSwagger();
@@ -61,6 +64,7 @@ public class Main {
         context.addServlet(sh, "/api/*");
         context.addServlet(ApiDeclarationServlet.class, "/api-docs/*");
         context.addServlet(DefaultServlet.class, "/*");
+
         server.start();
 
         LOG.info("==========================================");

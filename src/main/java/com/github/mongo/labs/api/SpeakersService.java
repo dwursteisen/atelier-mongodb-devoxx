@@ -15,19 +15,19 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Speaker;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.bson.types.ObjectId;
-import org.jongo.Jongo;
-import org.jongo.MongoCollection;
 
-import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 
@@ -38,15 +38,10 @@ import java.util.regex.Pattern;
 public class SpeakersService {
 
 
-    private MongoCollection collection;
+    @Named("mongo/speakers")
+    @Inject
     private DBCollection dbCollection;
 
-    @PostConstruct
-    public void init() throws UnknownHostException {
-        DB db = new MongoClient("localhost").getDB("devoxx");
-        dbCollection = db.getCollection("speakers");
-        collection = new Jongo(db).getCollection("speakers");
-    }
 
     @GET
     @Path("/")

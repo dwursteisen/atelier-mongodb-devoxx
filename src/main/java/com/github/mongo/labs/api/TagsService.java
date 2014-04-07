@@ -15,20 +15,18 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Tag;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import org.jongo.Jongo;
+import org.assertj.core.util.VisibleForTesting;
 import org.jongo.MongoCollection;
 
-import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.net.UnknownHostException;
 
 
 @Api(value = "/tags", description = "Consultation de tags")
@@ -37,14 +35,9 @@ import java.net.UnknownHostException;
 @Singleton
 public class TagsService {
 
-
+    @Named("jongo/talks")
+    @Inject
     private MongoCollection collection;
-
-    @PostConstruct
-    public void init() throws UnknownHostException {
-        DB db = new MongoClient("localhost").getDB("devoxx");
-        collection = new Jongo(db).getCollection("talks");
-    }
 
     @GET
     @Path("/")
@@ -58,5 +51,10 @@ public class TagsService {
                 .and("{$group: {_id: '$tags', count: {$sum:  1}}}")
                 .and("{$sort: {count: -1}}")
                 .as(Tag.class);
+    }
+
+    @VisibleForTesting
+    public void setCollection(MongoCollection collection) {
+        this.collection = collection;
     }
 }
