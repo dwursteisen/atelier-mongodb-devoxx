@@ -16,6 +16,7 @@ package com.github.mongo.labs;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
 import com.wordnik.swagger.config.ScannerFactory;
 import com.wordnik.swagger.jaxrs.config.BeanConfig;
@@ -30,10 +31,22 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.jongo.Jongo;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
 
+    private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger("fr.devoxx.mongodb");
+
     public static void main(String[] args) throws Exception {
+        LOG.info("==========================================");
+        LOG.info("Démarrage de l'application Mongodb/Devoxx");
+        LOG.info("==========================================");
+
+        initMongoProfiling();
+
+
         Server server = new Server(8080);
 
         ServletHolder sh = new ServletHolder(ServletContainer.class);
@@ -42,7 +55,6 @@ public class Main {
         sh.setInitOrder(1); // force loading at startup
 
         initSwagger();
-        initMongoProfiling();
 
         ServletContextHandler context = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS);
         context.setResourceBase(new File(Main.class.getResource("/static").toURI()).getAbsolutePath());
@@ -50,11 +62,22 @@ public class Main {
         context.addServlet(ApiDeclarationServlet.class, "/api-docs/*");
         context.addServlet(DefaultServlet.class, "/*");
         server.start();
+
+        LOG.info("==========================================");
+        LOG.info("L'application est disponible via :");
+        LOG.info("==========================================");
+        LOG.info(">\t\thttp://localhost:8080/ \t\t\t\t\t\t(l'application web)");
+        LOG.info(">\t\thttp://localhost:8080/tutorial.html \t\t(le plan de l'atelier)");
+        LOG.info(">\t\thttp://localhost:8080/swagger \t\t\t\t(pour tester l'api REST)");
+
         server.join();
     }
 
     public static void initMongoProfiling() {
         try {
+            // bye bye Mongo driver logs
+            Logger.getLogger("com.mongodb").setLevel(Level.OFF);
+
             DB db = new MongoClient("localhost").getDB("devoxx");
             Jongo jongo = new Jongo(db);
 
@@ -65,9 +88,16 @@ public class Main {
 
 
             System.err.println("profiling =" + r);
-        } catch (Exception ex) {
-            System.err.println("profiling = not enabled");
+        } catch (IOException e) {
+            throwMongoNotStarted();
+        } catch (MongoException e) {
+            throwMongoNotStarted();
         }
+    }
+
+    private static void throwMongoNotStarted() {
+        throw new RuntimeException("Oups ! mongodb n'est pas lancé ! " +
+                "Vous devez démarrer mongodb d'abord : mongod --dbpath=<repertoire> --smallfiles");
     }
 
     private static void initSwagger() {
