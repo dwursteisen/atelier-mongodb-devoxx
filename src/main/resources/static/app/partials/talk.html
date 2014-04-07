@@ -1,0 +1,43 @@
+<div class="container" >
+
+
+    <div class="row">
+        <div class="span12">
+            <h2>{{ talk.title }}</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span4">
+            <h3>Summary</h3>
+  		<span class="span9" ng-bind-html='talk.summary'>
+  		</span>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="span4">
+            <h3>Speakers</h3>
+            <ul>
+                <li ng-repeat="speaker in talk.speakers" >
+                    <a href="#/speakers/{{ speaker.ref }}">{{ speaker.name.firstName }} {{ speaker.name.lastName }}</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="span4">
+        </div>
+
+        <div class="span4">
+            <h3>Tags</h3>
+            <ul>
+                <li ng-repeat="tag in talk.tags" >
+                    {{tag}}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

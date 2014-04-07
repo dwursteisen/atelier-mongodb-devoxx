@@ -15,8 +15,8 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Speaker;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
+import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.bson.types.ObjectId;
@@ -28,6 +28,7 @@ import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 
 
 @Api(value = "/speakers", description = "Gestion des speakers (recherche, m-a-j, etc)")
@@ -38,18 +39,25 @@ public class SpeakersService {
 
 
     private MongoCollection collection;
+    private DBCollection dbCollection;
+    JSON json =new JSON();
+
 
     @PostConstruct
     public void init() throws UnknownHostException {
         DB db = new MongoClient("localhost").getDB("devoxx");
+        dbCollection = db.getCollection("speakers");
         collection = new Jongo(db).getCollection("speakers");
     }
 
     @GET
     @Path("/")
     @ApiOperation(value = "Retourne tous les speakers présent à Devoxx")
-    public Iterable<Speaker> all() {
-        return collection.find().as(Speaker.class);
+    public String all() {
+        DBObject sort = new BasicDBObject();
+        sort.put("name.lastName" , 1);
+        sort.put("name.firstName", 1);
+        return json.serialize(dbCollection.find().sort(sort));
     }
 
     @GET
@@ -57,17 +65,22 @@ public class SpeakersService {
     @ApiOperation(value = "Retrouve un speaker par son identifiant (ex: '5325b07a84ae2fdd99aa3ddb')",
             notes = "le service retourne un code 404 si non trouvé"
     )
-    public Speaker get(@PathParam("id") String id) {
-        return collection.findOne(new ObjectId(id)).as(Speaker.class);
+    public String get(@PathParam("id") String id) {
+        ObjectId objId  = new ObjectId( id );
+        BasicDBObject query = new BasicDBObject("_id", objId);
+        return json.serialize(dbCollection.findOne(query));
     }
+
 
     @GET
     @Path("/byname/{lastName}")
-    @ApiOperation(value = "Retrouve un speaker par son nom (ex: 'Aresti')",
+    @ApiOperation(value = "Retrouve une liste de speakers par leur nom (ex: 'Aresti')",
             notes = "le service retourne un code 404 si non trouvé"
     )
-    public Speaker getByName(@PathParam("lastName") String lastName) {
-        return collection.findOne("{'name.lastName': {$regex: #}}", "^" + lastName).as(Speaker.class);
+    public String getByName(@PathParam("lastName") String lastName) {
+        BasicDBObject query = new BasicDBObject();
+        query.put("name.lastName", java.util.regex.Pattern.compile(lastName, Pattern.CASE_INSENSITIVE));
+        return json.serialize(dbCollection.find(query));
     }
 
     @PUT

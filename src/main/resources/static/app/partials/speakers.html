@@ -1,0 +1,45 @@
+<div class="container" >
+
+
+    <div class="row">
+        <div class="span6">
+            <input ng-model="query" type="text" class="input-medium search-query span6"
+                   name="query"  placeholder="Type something..." autocomplete="off"
+                   z-keypress="search()">
+        </div>
+        <div class="span2 offset1">
+            <button ng-click="search()" type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="span12">
+            <table class="table" >
+                <thead>
+                <tr>
+                    <th>Last</th>
+                    <th>First</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="speaker in speakers" >
+
+                    <td>
+                        <a href="#/speakers/{{ speaker._id.$oid }}">{{speaker.name.lastName | uppercase }}</a>
+                    </td>
+
+                    <td>
+                        <a href="#/speakers/{{ speaker._id.$oid }}">{{speaker.name.firstName}}</a>
+                    </td>
+                </tr>
+
+                <tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+
