@@ -40,8 +40,6 @@ public class SpeakersService {
 
     private MongoCollection collection;
     private DBCollection dbCollection;
-    JSON json =new JSON();
-
 
     @PostConstruct
     public void init() throws UnknownHostException {
@@ -55,9 +53,9 @@ public class SpeakersService {
     @ApiOperation(value = "Retourne tous les speakers présent à Devoxx")
     public String all() {
         DBObject sort = new BasicDBObject();
-        sort.put("name.lastName" , 1);
+        sort.put("name.lastName", 1);
         sort.put("name.firstName", 1);
-        return json.serialize(dbCollection.find().sort(sort));
+        return JSON.serialize(dbCollection.find().sort(sort));
     }
 
     @GET
@@ -66,11 +64,10 @@ public class SpeakersService {
             notes = "le service retourne un code 404 si non trouvé"
     )
     public String get(@PathParam("id") String id) {
-        ObjectId objId  = new ObjectId( id );
+        ObjectId objId = new ObjectId(id);
         BasicDBObject query = new BasicDBObject("_id", objId);
-        return json.serialize(dbCollection.findOne(query));
+        return JSON.serialize(dbCollection.findOne(query));
     }
-
 
     @GET
     @Path("/byname/{lastName}")
@@ -80,7 +77,7 @@ public class SpeakersService {
     public String getByName(@PathParam("lastName") String lastName) {
         BasicDBObject query = new BasicDBObject();
         query.put("name.lastName", java.util.regex.Pattern.compile(lastName, Pattern.CASE_INSENSITIVE));
-        return json.serialize(dbCollection.find(query));
+        return JSON.serialize(dbCollection.find(query));
     }
 
     @PUT

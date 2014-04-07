@@ -15,15 +15,20 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Talk;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import org.jongo.MongoCollection;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.net.UnknownHostException;
 
@@ -34,7 +39,6 @@ import java.net.UnknownHostException;
 public class TalksService {
 
     private DBCollection dbCollection;
-    JSON json =new JSON();
 
 
     @PostConstruct
@@ -48,7 +52,7 @@ public class TalksService {
     @Path("/")
     @ApiOperation(value = "Retourne tous les talks")
     public String all() {
-        return json.serialize( dbCollection.find() );
+        return JSON.serialize(dbCollection.find());
     }
 
 
@@ -60,7 +64,7 @@ public class TalksService {
             response = Talk.class)
     public String get(@PathParam("id") String id) {
         BasicDBObject query = new BasicDBObject("_id", id);
-        return json.serialize( dbCollection.findOne(query) );
+        return JSON.serialize(dbCollection.findOne(query));
     }
 
 }
