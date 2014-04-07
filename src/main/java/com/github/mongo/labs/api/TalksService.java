@@ -15,11 +15,10 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Talk;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
+import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
 import javax.annotation.PostConstruct;
@@ -34,20 +33,24 @@ import java.net.UnknownHostException;
 @Singleton
 public class TalksService {
 
-    private MongoCollection collection;
+    private DBCollection dbCollection;
+    JSON json =new JSON();
+
 
     @PostConstruct
     public void init() throws UnknownHostException {
         DB db = new MongoClient("localhost").getDB("devoxx");
-        collection = new Jongo(db).getCollection("talks");
+        dbCollection = db.getCollection("talks");
+
     }
 
     @GET
     @Path("/")
     @ApiOperation(value = "Retourne tous les talks")
-    public Iterable<Talk> all() {
-        return collection.find().as(Talk.class);
+    public String all() {
+        return json.serialize( dbCollection.find() );
     }
+
 
     @GET
     @Path("/{id}")
@@ -55,12 +58,9 @@ public class TalksService {
             value = "Retrouve un talk par son identifiant (ex: XWC-772)",
             notes = "le service retourne un code 404 si non trouvé",
             response = Talk.class)
-    public Talk get(@PathParam("id") String id) {
-        Talk talk = collection.findOne("{_id: #}", id).as(Talk.class);
-        if (talk == null) {
-            throw new WebApplicationException(404);
-        }
-        return talk;
+    public String get(@PathParam("id") String id) {
+        BasicDBObject query = new BasicDBObject("_id", id);
+        return json.serialize( dbCollection.findOne(query) );
     }
 
 }
