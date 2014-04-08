@@ -123,7 +123,7 @@ function MapsCtrl($rootScope, $scope, $routeParams, $http, $location) {
 
             data.forEach(function (speaker) {
                 // add a marker in the given location, attach some popup content to it and open the popup
-                markers.push(L.marker([speaker.geo.longitude, speaker.geo.latitude])
+                markers.push(L.marker([speaker.geo.latitude, speaker.geo.longitude])
                  .addTo(map)
                  .bindPopup(speaker.name.firstName + " "+speaker.name.lastName));
 
@@ -141,7 +141,7 @@ function MapsCtrl($rootScope, $scope, $routeParams, $http, $location) {
                         // Je pense qu'il doit y avoir moyen de rationnaliser ce bout de javascript...
                         data.forEach(function (speaker) {
 
-                            markers.push(L.marker([speaker.geo.longitude, speaker.geo.latitude])
+                            markers.push(L.marker([speaker.geo.latitude, speaker.geo.longitude])
                                 .addTo(map)
                                 .bindPopup(speaker.name.firstName + " "+speaker.name.lastName));
                         });

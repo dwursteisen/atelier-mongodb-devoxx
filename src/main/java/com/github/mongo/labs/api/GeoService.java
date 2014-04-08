@@ -55,7 +55,7 @@ public class GeoService {
     public Iterable<Speaker> near(@PathParam("longitude") double longitude, @PathParam("latitude") double latitude) {
         return collection.find("{geo: {$near: " +
                 "{$geometry: {type:\"Point\", coordinates: [#, #]}, " +
-                "$maxDistance: 1000}}}", latitude, longitude).as(Speaker.class);
+                "$maxDistance: 1500}}}", longitude, latitude).as(Speaker.class);
     }
 
     @GET
