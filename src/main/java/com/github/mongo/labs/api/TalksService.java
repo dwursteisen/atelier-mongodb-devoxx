@@ -36,7 +36,7 @@ import javax.ws.rs.core.MediaType;
 @Singleton
 public class TalksService {
 
-    @Named("mongo/speakers")
+    @Named("mongo/talks")
     @Inject
     private DBCollection dbCollection;
 
