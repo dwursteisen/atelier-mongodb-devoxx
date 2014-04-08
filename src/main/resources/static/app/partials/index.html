@@ -1,9 +1,9 @@
-<div class="container" >
+<div class="container">
 
-
+    <div class="alert alert-info"><strong>Requête Mongo : </strong>{{ lastQuery }}</div>
     <div class="row">
         <div class="span12">
-            <table class="table" >
+            <table class="table">
                 <thead>
                 <tr>
                     <th>Title</th>
@@ -11,13 +11,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="entry in entries" >
+                <tr ng-repeat="entry in entries">
                     <td><a href="#/talks/{{entry._id}}">{{entry.title}}</a></td>
-                    <td>	<ul>
-                        <li ng-repeat="speaker in entry.speakers" >
-                            <a href="#/speakers/{{ speaker.ref }}">{{ speaker.name.firstName }} {{ speaker.name.lastName }}</a>
-                        </li>
-                    </ul>
+                    <td>
+                        <ul>
+                            <li ng-repeat="speaker in entry.speakers">
+                                <a href="#/speakers/{{ speaker.ref }}">{{ speaker.name.firstName }} {{
+                                    speaker.name.lastName }}</a>
+                            </li>
+                        </ul>
                     </td>
                 </tr>
 

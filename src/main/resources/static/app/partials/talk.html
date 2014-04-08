@@ -1,6 +1,6 @@
-<div class="container" >
+<div class="container">
 
-
+    <div class="alert alert-info"><strong>Requête Mongo : </strong>{{ lastQuery }}</div>
     <div class="row">
         <div class="span12">
             <h2>{{ talk.title }}</h2>
@@ -16,12 +16,11 @@
     </div>
 
 
-
     <div class="row">
         <div class="span4">
             <h3>Speakers</h3>
             <ul>
-                <li ng-repeat="speaker in talk.speakers" >
+                <li ng-repeat="speaker in talk.speakers">
                     <a href="#/speakers/{{ speaker.ref }}">{{ speaker.name.firstName }} {{ speaker.name.lastName }}</a>
                 </li>
             </ul>
@@ -33,7 +32,7 @@
         <div class="span4">
             <h3>Tags</h3>
             <ul>
-                <li ng-repeat="tag in talk.tags" >
+                <li ng-repeat="tag in talk.tags">
                     {{tag}}
                 </li>
             </ul>

@@ -63,7 +63,7 @@ public class MongoQueryService {
         if (iterable.hasNext()) {
             DBObject dbObject = iterable.next();
             StringBuilder builder = new StringBuilder()
-                    .append("db.").append(dbObject.get("ns")).append(".")
+                    .append("db.").append(dbObject.get("ns").toString().replace("devoxx.", "")).append(".")
                     .append("find(").append(dbObject.get("query")).append(")");
             return builder.toString();
         } else {
