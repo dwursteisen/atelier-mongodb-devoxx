@@ -8,6 +8,7 @@ var app = angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.dir
             when('/talks/:id', {templateUrl: 'partials/talk.html', controller: TalkCtrl }).
             when('/speakers/', {templateUrl: 'partials/speakers.html', controller: SpeakersListCtrl }).
             when('/speakers/:id', {templateUrl: 'partials/speaker.html', controller: SpeakerCtrl }).
+            when('/maps/', {templateUrl: 'partials/maps.html', controller: MapsCtrl}).
 
             otherwise({redirectTo: '/'});
 

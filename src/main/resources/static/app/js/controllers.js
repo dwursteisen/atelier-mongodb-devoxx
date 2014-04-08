@@ -43,7 +43,7 @@ function TalkCtrl($rootScope, $scope, $routeParams, $http, $location) {
             $scope.name = 'Error!'
         });
 }
-TalkCtrl.$inject = [$rootScope, $scope, $routeParams, $http, $location];
+TalkCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$http', '$location'];
 
 
 // List of talks
@@ -85,4 +85,59 @@ function SpeakerCtrl($rootScope, $scope, $routeParams, $http, $location) {
             $scope.name = 'Error!'
         });
 }
-SpeakerCtrl.$inject = [$rootScope, $scope, $routeParams, $http, $location];
+SpeakerCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$http', '$location'];
+
+
+function MapsCtrl($rootScope, $scope, $routeParams, $http, $location) {
+    $scope.speakers = [];
+    $scope.error = null;
+
+    var markers = [];
+
+    $http({method:'GET', url: '/api/geo/'})
+        .success(function(data) {
+            $scope.speakers = data;
+
+            // create a map in the "map" div, set the view to a given place and zoom
+            var map = L.map('map').setView([48.8670, 2.3521], 12);
+
+
+            L.tileLayer('http://localhost:8080/tiles/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            data.forEach(function (speaker) {
+                // add a marker in the given location, attach some popup content to it and open the popup
+                markers.push(L.marker([speaker.geo.longitude, speaker.geo.latitude])
+                 .addTo(map)
+                 .bindPopup(speaker.name.firstName + " "+speaker.name.lastName));
+
+            })
+
+            map.on('click', function(event) {
+                $http({method: 'GET', url: '/api/geo/'+event.latlng.lng + "/" +event.latlng.lat})
+                    .success(function (data) {
+
+                        markers.forEach(function (m) { map.removeLayer(m) });
+                        markers = [];
+
+                        // Je pense qu'il doit y avoir moyen de rationnaliser ce bout de javascript...
+                        data.forEach(function (speaker) {
+
+                            markers.push(L.marker([speaker.geo.longitude, speaker.geo.latitude])
+                                .addTo(map)
+                                .bindPopup(speaker.name.firstName + " "+speaker.name.lastName));
+                        });
+                    })
+                    .error(function(data) {
+                        $scope.error = 'Oups ! Probleme lors de la recuperation des donnees :S.' +
+                            'Le geo index est il bien present ? ( db.speakers.ensureIndex({geo: \"2dsphere\"}) )';
+                    });
+            });
+
+        })
+        .error(function(data) {
+            $scope.error = 'Oups ! Problème lors de la récupération des données :S';
+        });
+}
+MapsCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$http', '$location'];

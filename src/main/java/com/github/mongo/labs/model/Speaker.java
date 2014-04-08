@@ -35,6 +35,10 @@ public class Speaker {
         return _id.toStringMongod();
     }
 
+    public Geo getGeo() {
+        return geo;
+    }
+
     public static class Name {
         public String lastName;
         public String firstName;

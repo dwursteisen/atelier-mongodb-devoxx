@@ -15,6 +15,10 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Speaker;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.jongo.MongoCollection;
@@ -38,6 +42,10 @@ public class GeoService {
     @Inject
     private MongoCollection collection;
 
+    @Named("mongo/speakers")
+    @Inject
+    private DBCollection speakers;
+
     @GET
     @Path("/{longitude}/{latitude}")
     @ApiOperation(
@@ -47,6 +55,19 @@ public class GeoService {
     public Iterable<Speaker> near(@PathParam("longitude") double longitude, @PathParam("latitude") double latitude) {
         return collection.find("{geo: {$near: " +
                 "{$geometry: {type:\"Point\", coordinates: [#, #]}, " +
-                "$maxDistance: 5000}}}", longitude, latitude).as(Speaker.class);
+                "$maxDistance: 1000}}}", latitude, longitude).as(Speaker.class);
+    }
+
+    @GET
+    @Path("/")
+    @ApiOperation(
+            value = "Retourne tous les speakers avec leurs données de géolocalisation, nom et id",
+            notes = "C'est très proche du service /speakers/ : les données sont les mêmes, mais la structure est différente."
+    )
+    public String all() {
+        DBObject projection = new BasicDBObject();
+        projection.put("name", 1);
+        projection.put("geo", 1);
+        return JSON.serialize(speakers.find(new BasicDBObject(), projection));
     }
 }
