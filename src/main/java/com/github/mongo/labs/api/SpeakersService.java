@@ -86,7 +86,7 @@ public class SpeakersService {
     @PUT
     @Path("/{id}")
     @ApiOperation(value = "Mise à jour d'un speaker",
-            notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontré"
+            notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontrée"
     )
     public String update(@PathParam("id") String id, Speaker speaker) {
         speaker.setId(null);
@@ -97,7 +97,7 @@ public class SpeakersService {
     @POST
     @Path("/")
     @ApiOperation(value = "Ajout d'un speaker",
-            notes = "Le service retourne un code 500 si une erreur a été rencontré"
+            notes = "Le service retourne un code 500 si une erreur a été rencontrée"
     )
     public String add(Speaker speaker) {
         jongoCollection.save(speaker);
@@ -107,7 +107,7 @@ public class SpeakersService {
     @DELETE
     @Path("/{id}")
     @ApiOperation(value = "Suppression d'un speaker",
-            notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontré"
+            notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontrée"
     )
     public void delete(@PathParam("id") String id) {
 

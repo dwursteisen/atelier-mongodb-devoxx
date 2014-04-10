@@ -41,7 +41,7 @@ public class TagsService {
 
     @GET
     @Path("/")
-    @ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associés",
+    @ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associées",
             notes = "Le framework d'aggrégation doit être utilisé pour remonter les bonnes données"
     )
     public Iterable<Tag> all() {

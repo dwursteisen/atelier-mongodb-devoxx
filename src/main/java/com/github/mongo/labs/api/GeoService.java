@@ -14,15 +14,6 @@
 
 package com.github.mongo.labs.api;
 
-import com.github.mongo.labs.model.Speaker;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import org.jongo.MongoCollection;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -31,6 +22,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import org.jongo.MongoCollection;
 
 @Api(value = "/geo", description = "Recherche géolocalisé")
 @Path("/geo")
@@ -41,7 +41,6 @@ public class GeoService {
     @Named("jongo/speakers")
     @Inject
     private MongoCollection collection;
-
     @Named("mongo/speakers")
     @Inject
     private DBCollection speakers;
@@ -52,10 +51,17 @@ public class GeoService {
             value = "Retrouve les speakers proche du point [longitude, latitude] (ex: 48.8670, 2.3521)",
             notes = "Un <b>index géolocalisé</b> doit être présent sur la collection des speakers"
     )
-    public Iterable<Speaker> near(@PathParam("longitude") double longitude, @PathParam("latitude") double latitude) {
-        return collection.find("{geo: {$near: " +
-                "{$geometry: {type:\"Point\", coordinates: [#, #]}, " +
-                "$maxDistance: 1500}}}", longitude, latitude).as(Speaker.class);
+    public String near(@PathParam("longitude") double longitude, @PathParam("latitude") double latitude) {
+
+        DBObject query = BasicDBObjectBuilder.start()
+                .push("geo")
+                    .push("$near")
+                        .add("$maxDistance", 1500)
+                        .push("$geometry")
+                            .add("type", "Point")
+                            .add("coordinates", new Double[]{longitude, latitude})
+                .get();
+        return JSON.serialize(speakers.find(query));
     }
 
     @GET
@@ -68,6 +74,6 @@ public class GeoService {
         DBObject projection = new BasicDBObject();
         projection.put("name", 1);
         projection.put("geo", 1);
-        return JSON.serialize(speakers.find(new BasicDBObject(), projection));
+        return JSON.serialize(speakers.find(new BasicDBObject("geo", new BasicDBObject("$exists", "true")), projection));
     }
 }

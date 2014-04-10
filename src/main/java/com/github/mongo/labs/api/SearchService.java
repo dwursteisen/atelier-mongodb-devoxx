@@ -38,7 +38,6 @@ public class SearchService {
     @Named("mongo/talks")
     @Inject
     private DBCollection dbCollection;
-    JSON json =new JSON();
 
     @GET
     @Path("/{term}")
@@ -66,7 +65,7 @@ public class SearchService {
         projection.put("summary", 1);
         projection.put("speakers", 1);
 
-        return json.serialize(dbCollection.find(query, projection)  );
+        return JSON.serialize(dbCollection.find(query, projection));
     }
 
 }
