@@ -22,6 +22,7 @@ import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.bson.types.ObjectId;
+import org.jongo.MongoCollection;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -42,6 +43,13 @@ public class SpeakersService {
     @Inject
     private DBCollection dbCollection;
 
+    @Named("mongo/talks")
+    @Inject
+    private DBCollection dbCollectionTalks;
+
+    @Named("jongo/speakers")
+    @Inject
+    private MongoCollection jongoCollection;
 
     @GET
     @Path("/")
@@ -80,8 +88,10 @@ public class SpeakersService {
     @ApiOperation(value = "Mise à jour d'un speaker",
             notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontré"
     )
-    public void update(@PathParam("id") String id, Speaker speaker) {
-
+    public String update(@PathParam("id") String id, Speaker speaker) {
+        speaker.setId(null);
+        jongoCollection.update("{_id: #}", new ObjectId(id)  ).with("{$set:#}", speaker);
+        return id;
     }
 
     @POST
@@ -89,7 +99,30 @@ public class SpeakersService {
     @ApiOperation(value = "Ajout d'un speaker",
             notes = "Le service retourne un code 500 si une erreur a été rencontré"
     )
-    public void add(Speaker speaker) {
+    public String add(Speaker speaker) {
+        jongoCollection.save(speaker);
+        return speaker.getId();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @ApiOperation(value = "Suppression d'un speaker",
+            notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontré"
+    )
+    public void delete(@PathParam("id") String id) {
+
+        // Suppression des speakers dans les talks
+        DBObject query = new BasicDBObject();
+        DBObject selector = new BasicDBObject( "ref", id );
+        DBObject speakers = new BasicDBObject( "speakers", selector );
+        DBObject operation = new BasicDBObject("$pull", speakers );
+        dbCollectionTalks.update(query, operation, false, true);
+
+        // suppression du speaker
+        ObjectId objId = new ObjectId(id);
+        BasicDBObject removeQuery = new BasicDBObject("_id", objId);
+        dbCollection.remove( removeQuery  );
 
     }
+
 }

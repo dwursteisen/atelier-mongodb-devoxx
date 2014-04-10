@@ -17,17 +17,31 @@ NavBarController.$inject = ['$scope'];
 // List of talks
 function EntriesListCtrl($scope, $http) {
     $scope.entries = null;
+    $scope.query = null;
     $scope.lastQuery = "";
 
-    $http({method: 'GET', url: '/api/talks/' })
-        .success(function(data, status, headers, config) {
-            lastQuery($http, $scope);
-            $scope.entries = new Array();
-            $scope.entries = data;
-        })
-        .error(function(data, status, headers, config) {
-            $scope.name = 'Error!'
-        });
+
+    $scope.search = function() {
+        var query;
+        var uri = '/api/talks/';
+        if ($scope.query) {
+            uri = '/api/search/'+ $scope.query;
+        }
+
+        $http({method: 'GET', url: uri })
+            .success(function(data, status, headers, config) {
+                lastQuery($http, $scope);
+                $scope.entries = new Array();
+                $scope.entries = data;
+            })
+            .error(function(data, status, headers, config) {
+                $scope.name = 'Error!'
+            });
+
+
+    };
+
+    $scope.search();
 
 }
 EntriesListCtrl.$inject = ['$scope', '$http'];
@@ -93,6 +107,53 @@ function SpeakerCtrl($rootScope, $scope, $routeParams, $http, $location) {
         });
 }
 SpeakerCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$http', '$location'];
+
+
+
+function SpeakerFormCtrl($rootScope, $scope, $routeParams, $http, $location) {
+    $scope.speaker = null;
+    $scope.lastQuery = "";
+    $scope.speaker = null;
+
+    if ($routeParams.id) {
+        $http({method: 'GET', url: '/api/speakers/' + $routeParams.id }).success(function (data, status, headers, config) {
+            $scope.speaker = data;
+        })
+        .error(function (data, status, headers, config) {
+            $scope.name = 'Error!'
+        });
+    }
+
+    $scope.save = function() {
+        console.log($scope.speaker)
+        if ( $scope.speaker._id) {
+            $http.put('/api/speakers/'+ $scope.speaker._id.$oid, $scope.speaker)
+                .success(function(data, status, headers, config) { $location.path( "/speakers/"+ data);})
+                .error(function(data, status, headers, config) {
+                    $scope.name = 'Error!'
+                });
+        } else {
+            $http.post('/api/speakers/', $scope.speaker)
+                .success(function(data, status, headers, config) { $location.path( "/speakers/"+ data ); })
+                .error(function(data, status, headers, config) {
+                    $scope.name = 'Error!'
+                });
+        }
+
+
+    }
+
+    $scope.delete = function() {
+        $http.delete('/api/speakers/'+ $scope.speaker._id.$oid )
+            .success(function(data, status, headers, config) { $location.path( "/speakers" );  })
+            .error(function(data, status, headers, config) {
+                $scope.name = 'Error!'
+            });
+    }
+
+}
+SpeakerFormCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$http', '$location'];
+
 
 
 function lastQuery($http, $scope) {

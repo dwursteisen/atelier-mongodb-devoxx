@@ -1,0 +1,39 @@
+
+<form class="form-horizontal" method="post" id="speakerForm" name="speakerForm">
+
+    <input type="hidden" name="id" id="id" ng-model="speaker._id.$oid"   />
+
+    <fieldset>
+        <legend>speaker Information</legend>
+        <div class="control-group">
+            <label class="control-label" for="firstName">First Name</label>
+            <div class="controls">
+                <input ng-model="speaker.name.firstName" type="text" class="input-xlarge" id="firstName" name="firstName" autocomplete="off" >
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="lastName">Last Name</label>
+            <div class="controls">
+                <input ng-model="speaker.name.lastName" type="text" class="input-xlarge" id="lastName" name="lastName" autocomplete="off" >
+            </div>
+        </div>
+
+
+
+        <div class="control-group">
+            <label class="control-label" for="bio">Last Name</label>
+            <div class="controls">
+                <textarea rows="3" ng-model="speaker.bio"  class="input-xlarge" id="bio" name="bio" autocomplete="off" ></textarea>
+            </div>
+        </div>
+
+
+        <div class="form-actions">
+            <button type="submit" ng-click="save()" class="btn btn-primary" id="actionSave" name="action"  value="save" >Save changes</button>
+            <button type="submit" ng-click="delete()" value="delete" id="actionDelete" name="action" class="btn">Delete</button>
+        </div>
+
+    </fieldset>
+
+</form>
