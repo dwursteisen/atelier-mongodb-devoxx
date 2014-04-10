@@ -9,12 +9,9 @@ On partira du shell, on passera à l'utilisation de drivers MongoDB en Java, pui
 Création du repository local pour accès offline
 ---
 
-    mvn clean install -Dmaven.local.repository=./repository
+    mvn clean install dependency:go-offline -Dmaven.repo.local=repository -Pdev
 
-les dependencies seront téléchargées (même si vous les avez déjà dans votre repository local)
-Lors d'un lancement offline, c'est ce repository qui sera utilisé (cf configuration repository pom.xml)
-__Attention :__ La surcharge du repository maven central est en commentaire ! Il faut décommenter pour
-que maven évite de taper le central online.
++ d'information ici : http://www.aheritier.net/launch-a-maven-build-with-a-temporary-empty-local-repository/
 
 Requirements
 ----
@@ -25,6 +22,6 @@ Requirements
 - Maven
 - git
 
-Lancer le serveur
+Lancer le serveur via maven
 ----
 mvn exec:java -Dexec.mainClass="com.github.mongo.labs.Main"
