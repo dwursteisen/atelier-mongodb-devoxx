@@ -44,7 +44,16 @@ public class TalksService {
     @Path("/")
     @ApiOperation(value = "Retourne tous les talks")
     public String all() {
-        return JSON.serialize(dbCollection.find());
+
+        BasicDBObject query = new BasicDBObject();
+
+        BasicDBObject projection = new BasicDBObject();
+        projection.put("_id", 1);
+        projection.put("title", 1);
+        projection.put("summary", 1);
+        projection.put("speakers", 1);
+
+        return JSON.serialize(dbCollection.find( query, projection));
     }
 
 

@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <!-- saved from url=(0060)http://getbootstrap.com/2.3.2/examples/starter-template.html -->
-<html lang="fr">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>Viens découvrir MongoDB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,123 +10,113 @@
     <!-- Le styles -->
     <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
     <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
     </style>
     <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-    <script src="../assets/js/html5shiv.js"></script>
+      <script src="../assets/js/html5shiv.js"></script>
     <![endif]-->
 
     <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144"
-          href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114"
-          href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72"
-          href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed"
-          href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="http://getbootstrap.com/2.3.2/assets/ico/favicon.png">
-    <style type="text/css"></style>
-</head>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="http://getbootstrap.com/2.3.2/assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="http://getbootstrap.com/2.3.2/assets/ico/favicon.png">
+  <style type="text/css"></style></head>
 
-<body cz-shortcut-listen="true">
+  <body cz-shortcut-listen="true">
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
         <div class="container">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="brand" href="http://getbootstrap.com/2.3.2/examples/starter-template.html#">
-                {"Développeur" : "Viens découvrir MongoDB"}
-            </a>
-
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="http://getbootstrap.com/2.3.2/examples/starter-template.html#">
+          	{"Développeur" : "Viens découvrir MongoDB"}
+          </a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
+      </div>
     </div>
-</div>
 
-<div class="container">
-    <h1>Boostrap MongoDB</h1>
-
-    <section id="installation">
-        <h2>1. Installation et démarrage</h2>
-        <ul style="list-style: decimal;">
-            <li>Décompresser le fichier fourni dans le repertoire d'installation</li>
-            <li>Créer le répertoire pour stocker la data</li>
-            <code>/Users/duchess/dbdata</code>
-            <li>Démarrer la base de données</li>
-            <code>Sur MAC
-                ./mongod --dbpath /Users/duchess/dbdata --rest --smallfiles
-            </code>
-            <li>Allez sur http://localhost:28017/</li>
-        </ul>
-    </section>
-
-    <section id="quick-shell">
-        <h2>2. Découverte du Shell</h2>
-        <ul style="list-style: decimal;">
-            <li>Démarrer le shell</li>
-            <code>Sur MAC ./mongo</code>
-            <li>Le shell est JavaScript
+    <div class="container">
+	  <h1>Boostrap MongoDB</h1>
+	   
+	  <section id="installation">
+	      <h2>1. Installation et démarrage</h1>
+	  	  <ul style="list-style: decimal;">
+	  	  		<li>Décompresser le fichier fourni dans le repertoire d'installation</li>
+	  	  		<li>Créer le répertoire pour stocker la data</li>
+	  	  		<code>/Users/duchess/dbdata</code>
+	  	  		<li>Démarrer la base de données</li>
+	  	  		<code>Sur MAC 
+	  	  			./mongod --dbpath /Users/duchess/dbdata --rest
+	  	  		</code>
+	  	  		<li>Allez sur http://localhost:28017/</li>
+	  	  </ul>
+	  </section>
+	  
+	  <section id="quick-shell">
+	      <h2>2. Découverte du Shell</h1>
+	  	  <ul style="list-style: decimal;">
+	  	  		<li>Démarrer le shell</li>
+	  	  		<code>Sur MAC ./mongo</code>
+	  	  		<li>Le shell est JavaScript
 					<pre>
 					> var sayHello = "Hello Mongo"
 					> sayHello
 					Hello Mongo</pre>
-            </li>
-
-            <li>Explore l'objet "db"
+	  	  		</li>
+	  	  		
+	  	  		<li>Explore l'objet "db" 
 	  	  			<pre>
 					> db
 					> db.help()</pre>
-            </li>
-
-            <li>Création d'une base de données</li>
-            <code>ex : use Duchess </code>
-
-            <li>Insérer un document dans la collection things dans la base de données créée. Un idéntifinat unique sera
-                créé pour toi. ObjectID
-            </li>
-            <code>ex : db.things.insert({"name" : "table"}) </code>
-
-            <li>Lister un document avec findOne</li>
-            <code>ex : db.things.findOne()</code>
-
-            <li>Lister toutes les bases de données</li>
-            <code>show dbs</code>
-
-            <li>Qu'est-ce qu'on peut faire sur une collection ?</li>
-            <code>db.thins.help()</code>
-        </ul>
-    </section>
-    <section id="crud-simple">
-        <h2>3. CRUD simple</h2>
-        <ul style="list-style: decimal;">
-            <li>Insertion d'un document</li>
-            <code>
-                db.things.insert({"_id" : "123", "name" : "table", "size" : 12, date : new Date()})
-            </code>
-            <li>Find by Id</li>
-            <code>db.things.findOne("123")</code><br/>
-            <code>db.things.find({"_id" : "123"})</code>
-            <li>Suppression de tous les documents de la collection things de taille 12</li>
-            <code>db.things.remove({size : 12})</code>
-            <li>Suppression de tous les documents de la collection things</li>
-            <code>db.things.remove()</code>
-
-            <li>Comprendre l'update. Assurez vous que la collection things est vide. Executez et observez pas par pas.
-            </li>
+	  	  		</li>
+	  	  		
+	  	  		<li>Création d'une base de données</li>
+	  	  		<code>ex : use Duchess </code>
+	  	  		
+	  	  		<li>Insérer un document dans la collection things dans la base de données créée. Un idéntifinat unique sera créé pour toi. ObjectID</li>
+	  	  		<code>ex : db.things.insert({"name" : "table"}) </code>
+	  	  		
+	  	  		<li>Lister un document avec findOne</li>
+	  	  		<code>ex : db.things.findOne()</code>
+	  	  		
+	  	  		<li>Lister toutes les bases de données</li>
+	  	  		<code>show dbs</code>
+	  	  		
+	  	  		<li>Qu'est-ce qu'on peut faire sur une collection ?</li>
+	  	  		<code>db.thins.help()</code>
+	  	  </ul>
+	  </section>
+	  <section id="crud-simple">
+	  	  <h2>3. CRUD simple</h1>
+	  	  <ul style="list-style: decimal;">
+	  	  	<li>Insertion d'un document</li>
+	  	  	<code>
+	  	  	db.things.insert({"_id" : "123", "name" : "table", "size" : 12, date : new Date()})
+	  	  	</code>
+	  	  	<li>Find by Id</li>
+	  	  	<code>db.things.findOne("123")</code><br/>
+	  	  	<code>db.things.find({"_id" : "123"})</code>
+	  	  	<li>Suppression de tous les documents de la collection things de taille 12</li>
+	  	  	<code>db.things.remove({size : 12})</code>
+	  	  	<li>Suppression de tous les documents de la collection things</li>
+	  	  	<code>db.things.remove()</code>
+	  	  	
+	  	  	<li>Comprendre l'update. Assurez vous que la collection things est vide. Executez et observez pas par pas.</li>
 	  	  	<pre>
 	  	  	// Insertion des 10
 	  	  	for(var i= 0; i<10; i++){
@@ -153,21 +141,21 @@
 	  	  	Faites le même update avec "upsert" à true :
 	  	  	db.things.update({name : "chaise"}, {$set : {date : new Date()}}, true, false)
 	  	  	</pre>
-
-        </ul>
-    </section>
-    <section id="restorer-base-devoxx">
-        <h2>4. Restorer une base de données depuis un dump</h2>
-        <ul style="list-style: decimal;">
-            <li>Dans le repertoire du projet, le dump de la base de données se trouve sous le repertoire "data".</li>
-            <code>atelier-mongodb-devoxx/data</code>
-            <li>Utiliser MongoRestore pour restorer la base de données.</li>
-            <code>./mongorestore /{VOTRE_PATH}/atelier-mongodb-devoxx/data/devoxx</code>
-            <li>Dans le shell, lister les bases de données</li>
-            <Li>Dans le shell, lister les collections de la base de données qu'on vient d'importer : devoxx</li>
-            <code>db.getCollectionNames()</code></h2>
-            <li>Dans le shell, lister des speakers</li>
-            <code>db.speakers.find().pretty()</code>
+	  	  	
+	  	  </ul>
+	  </section>
+      <section id="restorer-base-devoxx">
+	      <h2>4. Restorer une base de données depuis un dump</h1>
+	  	  <ul style="list-style: decimal;">
+	  	  		<li>Dans le repertoire du projet, le dump de la base de données se trouve sous le repertoire "data".</li>
+	  	  		<code>atelier-mongodb-devoxx/data</code>
+	  	  		<li>Utiliser MongoRestore pour restorer la base de données.</li>
+	  	  		<code>./mongorestore /{VOTRE_PATH}/atelier-mongodb-devoxx/data/devoxx</code>
+	  	  		<li>Dans le shell, lister les bases de données</li>
+	  	  		<Li>Dans le shell, lister les collections de la base de données qu'on vient d'importer : devoxx</li>
+	  	  		<code>db.getCollectionNames()</code></h2>
+	  	  		<li>Dans le shell, lister des speakers</li>
+	  	  		<code>db.speakers.find().pretty()</code>
 	  	  		<pre>
 {
 	"name" : {
@@ -182,65 +170,80 @@
 	"_id" : ObjectId("5325b07884ae2fdd99aa3dc3")
 }
 	 			</pre>
-        </ul>
-    </section>
-    <section id="recherche-base-devoxx">
-        <h2>5. Recherche sur la base de données Devoxx</h2>
-        <ul style="list-style: decimal;">
+	  	  </ul>
+	  </section>
+	  <section id="recherche-base-devoxx">
+	      <h2>5. Recherche sur la base de données Devoxx</h2>
+	      <ul style="list-style: decimal;">
+	      	  
+	      	  <div class="alert alert-warn">Utilisez <strong>explain</strong> pour avoir l'information sur vos queries. Exemple : db.talks.find({"tags" : "java"}).explain()</div>
+	      	  
+	      	  <li>Combien de speakers ?</li>
+		      <code>db.speakers.count()</code>
+		      
+		      <li>Recherchez les speakers qui s'appelent Julien. Il en a 4 !</li>
+		      <code>db.speakers.find(/query ici/)</code>
 
-            <div class="alert alert-warn">Utilisez <strong>explain</strong> pour avoir l'information sur vos queries.
-                Exemple : db.talks.find({"tags" : "java"}).explain()
-            </div>
+		      <li>Recherchez les talks du speaker avec le nom famille "Wursteisen" </li>
+		      <code>db.talks.find(/query ici/)</code>
 
-            <li>Combien de speakers ?</li>
-            <code>db.speakers.count()</code>
+		      <li>Recherchez les talks qui contiennent le mot "NoSQL" dans la description. </li>
+		      
+		      <div class="alert alert-info">Tip : pour cette recherche on a besoin d'une expression regulière. Testez "NoSQL" et ensuite /NoSQL/ dans la valeur de la query</div>
+		      <li>Recherchez toutes les valeurs distinct des tags. Utilisez "distinct"</li>
+		      
+		      <li>Recherchez en limitant à 5 les talks de type "Conference" en langue française triés par ordre alphabetique du titre. N'affichez que le titre et l'id dans la console</li>
+		      <div class="alert alert-info"> Tip : Utilisez l'aide db.talks.help()</div>
+		      
+	      </ul>
+	      
+	  </section>
+	  <section id="recherche-avancee">
+	      <h2>6. Recherche avancée sur la base de données : Le Framework d'aggregation</h2>
+	      
+	      <h2>7. Recherche Géospatial</h2>
+	  </section>
 
-            <li>Recherchez les speakers qui s'appelent Julien. Il en a 4 !</li>
-            <code>db.speakers.find(/query ici/)</code>
-
-            <li>Recherchez les talks du speaker avec le nom famille "Wursteisen"</li>
-            <code>db.talks.find(/query ici/)</code>
-
-            <li>Recherchez les talks qui contiennent le mot "NoSQL" dans la description.</li>
-
-            <div class="alert alert-info">Tip : pour cette recherche on a besoin d'une expression regulière. Testez
-                "NoSQL" et ensuite /NoSQL/ dans la valeur de la query
-            </div>
-            <li>Recherchez toutes les valeurs distinct des tags. Utilisez "distinct"</li>
-
-            <li>Recherchez en limitant à 5 les talks de type "Conference" en langue française triés par ordre
-                alphabetique du titre. N'affichez que le titre et l'id dans la console
-            </li>
-            <div class="alert alert-info"> Tip : Utilisez l'aide db.talks.help()</div>
-
-        </ul>
-
-    </section>
-    <section id="recherche-avancee">
-        <h2>6. Recherche avancée sur la base de données : Le Framework d'aggregation</h2>
-
-        <h2>7. Recherche Géospatial</h2>
-    </section>
-</div>
-<!-- /container -->
-
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="./Bootstrap, from Twitter_files/jquery.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-transition.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-alert.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-modal.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-dropdown.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-scrollspy.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-tab.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-tooltip.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-popover.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-button.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-collapse.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-carousel.js"></script>
-<script src="./Bootstrap, from Twitter_files/bootstrap-typeahead.js"></script>
+        <section id="recherche-fulltezt-devoxx">
+            <h2>8. Recherche Full Text Devoxx</h2>
+            <ul style="list-style: decimal;">
+                <p>La version 2.6.x de MongoDB supporte maintenant la recherche "full text". Cette fonctionnalité était disponible en beta en 2.4.</p>
 
 
-</body>
-</html>
+                <li>Créez un index "text" sur les champs "title" et "summary" de la collection "talks"</li>
+                <code>db.talks.ensureIndex({ summary : "text", title : "text"  }, { default_language: "french" })</code>
+
+                <li>Recherchez les talks qui parlent de HTML5</li>
+                <code>db.talks.find( { $text : {$search :  "HTML5" } }  )</code>
+
+                <li>Recherchez les talks taggés en "java" et qui concernent "HTML5" </li>
+                <code>db.talks.find( / query ici /  )</code>
+
+
+            </ul>
+
+        </section>
+
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./Bootstrap, from Twitter_files/jquery.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-transition.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-alert.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-modal.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-dropdown.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-scrollspy.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-tab.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-tooltip.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-popover.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-button.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-collapse.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-carousel.js"></script>
+    <script src="./Bootstrap, from Twitter_files/bootstrap-typeahead.js"></script>
+
+  
+
+</body></html>

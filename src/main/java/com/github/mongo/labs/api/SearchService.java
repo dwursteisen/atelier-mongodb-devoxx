@@ -14,8 +14,9 @@
 
 package com.github.mongo.labs.api;
 
-import com.github.mongo.labs.model.Talk;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -34,21 +35,38 @@ import javax.ws.rs.core.MediaType;
 @Singleton
 public class SearchService {
 
-    @Named("jongo/speakers")
+    @Named("mongo/talks")
     @Inject
     private DBCollection dbCollection;
-
+    JSON json =new JSON();
 
     @GET
     @Path("/{term}")
     @ApiOperation(value = "Recherche les talks ayant le terme fourni en paramètre (ex: java). " +
             "Cette recherche utilise la fonction FullText Search de MongoDB. ",
-            notes = "Il ne faut pas oublier d'activer cette fonctionnalité sur mongo : " +
-                    "<b>mongod --setParameter textSearchEnabled=true</b>"
+            notes = "La création d'un index Full Text est necessaire : " +
+                    "<b>db.talks.ensureIndex({ summary : \"text\", title : \"text\"  }, { default_language: \"french\" })</b>"
     )
-    public Iterable<Talk> search(@PathParam("term") String term) {
-        return null;
-    }
+    public String search(@PathParam("term") String term) {
 
+        // Termes de la recheche
+        // il est ici possible d'utiliser les differentes options fournies par le Search de Mongo:
+        // - terme unique:   future
+        // - plusieurs terme: future mobile
+        // - negations : future mobile -bof
+        BasicDBObject query = new BasicDBObject();
+        BasicDBObject search = new BasicDBObject();
+        search.put("$search", term);
+        query.put("$text", search);
+
+        // projection pour limiter les champs
+        BasicDBObject projection = new BasicDBObject();
+        projection.put("_id", 1);
+        projection.put("title", 1);
+        projection.put("summary", 1);
+        projection.put("speakers", 1);
+
+        return json.serialize(dbCollection.find(query, projection)  );
+    }
 
 }

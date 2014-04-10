@@ -14,14 +14,23 @@
 
 package com.github.mongo.labs.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.Id;
 
-public class Speaker {
+public class Speaker  {
 
+    @Id
     private ObjectId _id;
     private Name name;
     private String bio;
+
+    @JsonIgnore
     private Geo geo;
+
+
+    public String getId() { return _id.toStringMongod(); }
+    public void setId(String id) { _id = (id == null)? null : new ObjectId(id);  }
 
     public Name getName() {
         return name;
@@ -31,9 +40,11 @@ public class Speaker {
         this.name = name;
     }
 
-    public String getId() {
-        return _id.toStringMongod();
-    }
+    public String getBio() { return bio; }
+
+    public void setBio(String bio) { this.bio = bio; }
+
+    public void setGeo(Geo geo) { this.geo = geo; }
 
     public Geo getGeo() {
         return geo;
@@ -42,10 +53,36 @@ public class Speaker {
     public static class Name {
         public String lastName;
         public String firstName;
+
+        @Override
+        public String toString() {
+            return "Name{" +
+                    "lastName='" + lastName + '\'' +
+                    ", firstName='" + firstName + '\'' +
+                    '}';
+        }
     }
 
     public static class Geo {
         public double longitude;
         public double latitude;
+
+        @Override
+        public String toString() {
+            return "Geo{" +
+                    "longitude=" + longitude +
+                    ", latitude=" + latitude +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Speaker{" +
+                "_id=" + _id +
+                ", name=" + name +
+                ", bio='" + bio + '\'' +
+                ", geo=" + geo +
+                '}';
     }
 }
