@@ -45,13 +45,15 @@ public class TalksService {
     @ApiOperation(value = "Retourne tous les talks")
     public String all() {
 
+        // db.talks.find({}, {title: 1, summary: 1, speakers: 1})
         BasicDBObject query = new BasicDBObject();
 
         BasicDBObject projection = new BasicDBObject();
-        projection.put("_id", 1);
-        projection.put("title", 1);
-        projection.put("summary", 1);
-        projection.put("speakers", 1);
+
+//        projection.put("_id", 1);
+//        projection.put("title", 1);
+//        projection.put("summary", 1);
+//        projection.put("speakers", 1);
 
         return JSON.serialize(dbCollection.find( query, projection));
     }
@@ -64,6 +66,8 @@ public class TalksService {
             notes = "le service retourne un code 404 si non trouvé",
             response = Talk.class)
     public String get(@PathParam("id") String id) {
+
+//        db.talks.find({ "_id" : "AFY-069"})
         BasicDBObject query = new BasicDBObject("_id", id);
         return JSON.serialize(dbCollection.findOne(query));
     }

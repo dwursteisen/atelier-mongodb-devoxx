@@ -58,6 +58,7 @@ public class SpeakersService {
         DBObject sort = new BasicDBObject();
         sort.put("name.lastName", 1);
         sort.put("name.firstName", 1);
+        //  db.speakers.find({ "query" : { } , "orderby" : { "name.lastName" : 1 , "name.firstName" : 1}})
         return JSON.serialize(dbCollection.find().sort(sort));
     }
 
@@ -67,6 +68,7 @@ public class SpeakersService {
             notes = "le service retourne un code 404 si non trouvé"
     )
     public String get(@PathParam("id") String id) {
+//        db.speakers.find({ "_id" : { "$oid" : "534444a244ae6328612a69a1"}})
         ObjectId objId = new ObjectId(id);
         BasicDBObject query = new BasicDBObject("_id", objId);
         return JSON.serialize(dbCollection.findOne(query));
@@ -78,6 +80,7 @@ public class SpeakersService {
             notes = "le service retourne un code 404 si non trouvé"
     )
     public String getByName(@PathParam("lastName") String lastName) {
+//        db.speakers.find({ "name.lastName" : { "$regex" : "Ares"}})
         BasicDBObject query = new BasicDBObject();
         query.put("name.lastName", java.util.regex.Pattern.compile(lastName, Pattern.CASE_INSENSITIVE));
         return JSON.serialize(dbCollection.find(query));
@@ -90,6 +93,7 @@ public class SpeakersService {
     )
     public String update(@PathParam("id") String id, Speaker speaker) {
         speaker.setId(null);
+        // db.speaker.update({_id: #, {...});
         jongoCollection.update("{_id: #}", new ObjectId(id)  ).with("{$set:#}", speaker);
         return id;
     }
@@ -100,6 +104,7 @@ public class SpeakersService {
             notes = "Le service retourne un code 500 si une erreur a été rencontrée"
     )
     public String add(Speaker speaker) {
+        // db.speaker.insert({...});
         jongoCollection.save(speaker);
         return speaker.getId();
     }
@@ -112,6 +117,7 @@ public class SpeakersService {
     public void delete(@PathParam("id") String id) {
 
         // Suppression des speakers dans les talks
+        // db.talks.update({}, {$pull: {speakers: {ref: #}})
         DBObject query = new BasicDBObject();
         DBObject selector = new BasicDBObject( "ref", id );
         DBObject speakers = new BasicDBObject( "speakers", selector );
@@ -119,6 +125,7 @@ public class SpeakersService {
         dbCollectionTalks.update(query, operation, false, true);
 
         // suppression du speaker
+        // db.speakers.remove({_id: #})
         ObjectId objId = new ObjectId(id);
         BasicDBObject removeQuery = new BasicDBObject("_id", objId);
         dbCollection.remove( removeQuery  );

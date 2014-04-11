@@ -45,6 +45,11 @@ public class TagsService {
             notes = "Le framework d'aggrégation doit être utilisé pour remonter les bonnes données"
     )
     public Iterable<Tag> all() {
+        // db.talks.aggregate([{$project: {tags: 1}},
+        //                     {$unwind: '$tags'},
+        //                     {$project: {tags: {$toLower: '$tags'}}},
+        //                     {$group: {_id: '$tags', count: {$sum:  1}}},
+        //                     {$sort: {count: -1}})
         return collection.aggregate("{$project: {tags: 1}}")
                 .and("{$unwind: '$tags'}")
                 .and("{$project: {tags: {$toLower: '$tags'}}}")

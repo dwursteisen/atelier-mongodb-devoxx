@@ -52,15 +52,9 @@ public class GeoService {
             notes = "Un <b>index géolocalisé</b> doit être présent sur la collection des speakers"
     )
     public String near(@PathParam("longitude") double longitude, @PathParam("latitude") double latitude) {
-
+         // db.speakers.find({ "geo" : { "$near" : { "$maxDistance" : 1500 , "$geometry" : { "type" : "Point" , "coordinates" : [ lon , lat]}}}})
         DBObject query = BasicDBObjectBuilder.start()
-                .push("geo")
-                    .push("$near")
-                        .add("$maxDistance", 1500)
-                        .push("$geometry")
-                            .add("type", "Point")
-                            .add("coordinates", new Double[]{longitude, latitude})
-                .get();
+                         .get();
         return JSON.serialize(speakers.find(query));
     }
 

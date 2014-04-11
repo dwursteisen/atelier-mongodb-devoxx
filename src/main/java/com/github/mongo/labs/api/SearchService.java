@@ -65,6 +65,8 @@ public class SearchService {
         projection.put("summary", 1);
         projection.put("speakers", 1);
 
+        // db.talks.find({ "$text" : { "$search" : "mongo"}})
+
         return JSON.serialize(dbCollection.find(query, projection));
     }
 
