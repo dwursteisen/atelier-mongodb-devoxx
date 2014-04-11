@@ -23,6 +23,6 @@ package com.github.mongo.labs.model;
  */
 public class Tag {
 
-    public String _id;
+    public String tag;
     public int count;
 }
