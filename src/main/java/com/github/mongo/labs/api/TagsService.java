@@ -15,6 +15,10 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Tag;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.assertj.core.util.VisibleForTesting;
@@ -39,9 +43,15 @@ public class TagsService {
     @Inject
     private MongoCollection collection;
 
+
+    @Named("mongo/talks")
+    @Inject
+    private DBCollection dbCollection;
+
+
     @GET
     @Path("/")
-    @ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associées",
+    @ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associées. Ce endpoint utilise Jongo",
             notes = "Le framework d'aggrégation doit être utilisé pour remonter les bonnes données"
     )
     public Iterable<Tag> all() {
@@ -49,9 +59,41 @@ public class TagsService {
                 .and("{$unwind: '$tags'}")
                 .and("{$project: {tags: {$toLower: '$tags'}}}")
                 .and("{$group: {_id: '$tags', count: {$sum:  1}}}")
+                .and("{ '$project' : { '_id' : 0, 'tag' : '$_id' , 'count' : 1 } }")
                 .and("{$sort: {count: -1}}")
                 .as(Tag.class);
     }
+
+
+    @GET
+    @Path("/native/")
+    @ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associées. Ce endpoint utilise le driver en native",
+            notes = "Le framework d'aggrégation doit être utilisé pour remonter les bonnes données"
+    )
+    public String countByTag() {
+
+        DBObject project0 = new BasicDBObject("$project", new BasicDBObject("tags", 1));
+
+        DBObject unwind = new BasicDBObject("$unwind", "$tags");
+        DBObject project1 = new BasicDBObject("$project", new BasicDBObject("tags", new BasicDBObject("$toLower", "$tags")  ));
+
+        DBObject groupFields = new BasicDBObject();
+        groupFields.put("_id", "$tags");
+        groupFields.put("count", new BasicDBObject("$sum", 1));
+        DBObject group = new BasicDBObject("$group", groupFields);
+
+        DBObject projectFields = new BasicDBObject();
+        projectFields.put("_id", 0);
+        projectFields.put("tags", "$_id");
+        projectFields.put("count", 1);
+
+        DBObject project2 = new BasicDBObject("$project", projectFields);
+
+        DBObject sort = new BasicDBObject("$sort", new BasicDBObject("count", -1));
+
+        return JSON.serialize(dbCollection.aggregate(unwind, project1, group, project2, sort).results());
+    }
+
 
     @VisibleForTesting
     public void setCollection(MongoCollection collection) {

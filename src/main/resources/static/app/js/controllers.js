@@ -224,3 +224,20 @@ function MapsCtrl($rootScope, $scope, $routeParams, $http, $location) {
         });
 }
 MapsCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$http', '$location'];
+
+
+function TagsCtrl($rootScope, $scope, $routeParams, $http, $location) {
+    $scope.tags = [];
+    $scope.error = null;
+
+    $http({method: 'GET', url: '/api/tags/' }).success(function (data, status, headers, config) {
+        $scope.tags = data;
+    }).error(function (data, status, headers, config) {
+            $scope.name = 'Error!'
+    });
+
+
+
+}
+TagsCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$http', '$location'];
+
