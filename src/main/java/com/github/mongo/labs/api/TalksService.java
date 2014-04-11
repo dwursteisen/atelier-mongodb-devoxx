@@ -43,17 +43,23 @@ public class TalksService {
     @GET
     @Path("/")
     @ApiOperation(value = "Retourne tous les talks")
+    /**
+     * La requête à constuire :
+     *
+     * <pre>
+     *     db.talks.find({}, {title: 1, summary: 1, speakers: 1})
+     * </pre>
+     *
+     * La requête retourne tous les résultats, mais on n'expose dans le résultat que les champs
+     * title/summary/speakers/_id (le champ _id est ajouté par défaut)
+     *
+     * Il faut bien utiliser les projections
+     */
     public String all() {
 
-        // db.talks.find({}, {title: 1, summary: 1, speakers: 1})
         BasicDBObject query = new BasicDBObject();
 
         BasicDBObject projection = new BasicDBObject();
-
-//        projection.put("_id", 1);
-//        projection.put("title", 1);
-//        projection.put("summary", 1);
-//        projection.put("speakers", 1);
 
         return JSON.serialize(dbCollection.find( query, projection));
     }
@@ -65,10 +71,15 @@ public class TalksService {
             value = "Retrouve un talk par son identifiant (ex: XWC-772)",
             notes = "le service retourne un code 404 si non trouvé",
             response = Talk.class)
+    /**
+     * La requête à constuire :
+     *
+     * <pre>
+     *      db.talks.find({ "_id" : "AFY-069"})
+     * </pre>
+     */
     public String get(@PathParam("id") String id) {
-
-//        db.talks.find({ "_id" : "AFY-069"})
-        BasicDBObject query = new BasicDBObject("_id", id);
+        BasicDBObject query = new BasicDBObject();
         return JSON.serialize(dbCollection.findOne(query));
     }
 

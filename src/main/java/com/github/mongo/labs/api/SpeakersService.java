@@ -54,11 +54,16 @@ public class SpeakersService {
     @GET
     @Path("/")
     @ApiOperation(value = "Retourne tous les speakers présent à Devoxx")
+    /**
+     * La requête à construire pour rechercher tous les speakers, par ordre de nom/prénom :
+     * <pre>
+     *     db.speakers.find({}).sort({ "name.lastName" : 1 , "name.firstName" : 1})
+     * </pre>
+     *
+     * Le driver Java mongo propose lui aussi une méthode <code>sort</code>.
+     */
     public String all() {
         DBObject sort = new BasicDBObject();
-        sort.put("name.lastName", 1);
-        sort.put("name.firstName", 1);
-        //  db.speakers.find({ "query" : { } , "orderby" : { "name.lastName" : 1 , "name.firstName" : 1}})
         return JSON.serialize(dbCollection.find().sort(sort));
     }
 
@@ -67,10 +72,15 @@ public class SpeakersService {
     @ApiOperation(value = "Retrouve un speaker par son identifiant (ex: '5325b07a84ae2fdd99aa3ddb')",
             notes = "le service retourne un code 404 si non trouvé"
     )
+    /**
+     * La requête à construire pour récuperer un speaker :
+     *
+     * <pre>
+     *     db.speakers.find({_id: #})
+     * </pre>
+     */
     public String get(@PathParam("id") String id) {
-//        db.speakers.find({ "_id" : { "$oid" : "534444a244ae6328612a69a1"}})
-        ObjectId objId = new ObjectId(id);
-        BasicDBObject query = new BasicDBObject("_id", objId);
+        BasicDBObject query = new BasicDBObject();
         return JSON.serialize(dbCollection.findOne(query));
     }
 
@@ -79,10 +89,20 @@ public class SpeakersService {
     @ApiOperation(value = "Retrouve une liste de speakers par leur nom (ex: 'Aresti')",
             notes = "le service retourne un code 404 si non trouvé"
     )
+    /**
+     * La requête à construire :
+     *
+     * <pre>
+     *     db.speakers.find({ "name.lastName" : { "$regex" : "Ares"}})
+     * </pre>
+     *
+     * Le Driver mongo peut directement utiliser une regex, et générera
+     * <code>{ "$regex" : "Ares"}</code>.
+     */
     public String getByName(@PathParam("lastName") String lastName) {
-//        db.speakers.find({ "name.lastName" : { "$regex" : "Ares"}})
+        Pattern regex = Pattern.compile(lastName, Pattern.CASE_INSENSITIVE);
+
         BasicDBObject query = new BasicDBObject();
-        query.put("name.lastName", java.util.regex.Pattern.compile(lastName, Pattern.CASE_INSENSITIVE));
         return JSON.serialize(dbCollection.find(query));
     }
 
@@ -91,10 +111,25 @@ public class SpeakersService {
     @ApiOperation(value = "Mise à jour d'un speaker",
             notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontrée"
     )
+    /**
+     * La requête à construire via le driver Mongo :
+     * <pre>
+     *     db.speakers.update({_id: #}, {$set: {
+     *                                      "name" : { "lastName" : "Grall", "firstName" : "Tugdual" },
+     *                                      "bio" : "<p>Technical Evangelist</p>\n",
+     *                                      "geo" : { "longitude" : 2.3521, "latitude" : 48.8091 }
+     *                                      }
+     *                                   });
+     * </pre>
+     *
+     * Jongo s'affranchi très bien de ce genre de problème en prenant un POJO et
+     * en générant le json correspondant.
+     *
+     * Pour utiliser jongo, utilisez simplement jongoCollection.
+     *
+     */
     public String update(@PathParam("id") String id, Speaker speaker) {
-        speaker.setId(null);
-        // db.speaker.update({_id: #, {...});
-        jongoCollection.update("{_id: #}", new ObjectId(id)  ).with("{$set:#}", speaker);
+        // dbCollection.update()
         return id;
     }
 
@@ -103,9 +138,20 @@ public class SpeakersService {
     @ApiOperation(value = "Ajout d'un speaker",
             notes = "Le service retourne un code 500 si une erreur a été rencontrée"
     )
+    /**
+     * La requête à constuire :
+     * <pre>
+     *     db.speakers.insert({
+     *                             "name" : { "lastName" : "Grall", "firstName" : "Tugdual" },
+     *                             "bio" : "<p>Technical Evangelist</p>\n",
+     *                             "geo" : { "longitude" : 2.3521, "latitude" : 48.8091 }
+     *                        })
+     * </pre>
+     *
+     * Ici encore, Jongo peut faire la même chose.
+     */
     public String add(Speaker speaker) {
-        // db.speaker.insert({...});
-        jongoCollection.save(speaker);
+        // dbCollection.insert()
         return speaker.getId();
     }
 
@@ -114,21 +160,31 @@ public class SpeakersService {
     @ApiOperation(value = "Suppression d'un speaker",
             notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontrée"
     )
+    /**
+     * Pour supprimer un speaker, il faut le supprimer de tous les endroits où il est référencé.
+     * c-a-d la collection "talks" et "speakers"
+     *
+     * les requêtes à générer sont dans ce cas :
+     *
+     *
+     * <pre>
+     *     // supprime le speaker de tous les talks où il est mentionné
+     *     db.talks.update({}, {$pull: {speakers: {ref: #}})
+     * </pre>
+     *
+     * <pre>
+     *     db.speakers.remove({_id: #})
+     * </pre>
+     *
+     */
     public void delete(@PathParam("id") String id) {
 
         // Suppression des speakers dans les talks
-        // db.talks.update({}, {$pull: {speakers: {ref: #}})
         DBObject query = new BasicDBObject();
-        DBObject selector = new BasicDBObject( "ref", id );
-        DBObject speakers = new BasicDBObject( "speakers", selector );
-        DBObject operation = new BasicDBObject("$pull", speakers );
-        dbCollectionTalks.update(query, operation, false, true);
+        // dbCollectionTalks.update(query, modifier)
 
         // suppression du speaker
-        // db.speakers.remove({_id: #})
-        ObjectId objId = new ObjectId(id);
-        BasicDBObject removeQuery = new BasicDBObject("_id", objId);
-        dbCollection.remove( removeQuery  );
+        // dbCollection.remove(query);
 
     }
 

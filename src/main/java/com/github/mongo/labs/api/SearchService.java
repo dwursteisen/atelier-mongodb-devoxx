@@ -46,6 +46,14 @@ public class SearchService {
             notes = "La création d'un index Full Text est necessaire : " +
                     "<b>db.talks.ensureIndex({ summary : \"text\", title : \"text\"  }, { default_language: \"french\" })</b>"
     )
+    /**
+     * MongoDB 2.6 offre la possibilité de faire de la recherche fulltext, à comdition de ne pas oublier de mettre le bon index :
+     * <pre>db.talks.ensureIndex({ summary : "text", title : "text"  }, { default_language: "french" })</pre>
+     *
+     * La requête à constuire pour la recherche fulltext est de cette forme :
+     *
+     * <pre>db.talks.find({ "$text" : { "$search" : "mongo"}})</pre>
+     */
     public String search(@PathParam("term") String term) {
 
         // Termes de la recheche
@@ -54,9 +62,6 @@ public class SearchService {
         // - plusieurs terme: future mobile
         // - negations : future mobile -bof
         BasicDBObject query = new BasicDBObject();
-        BasicDBObject search = new BasicDBObject();
-        search.put("$search", term);
-        query.put("$text", search);
 
         // projection pour limiter les champs
         BasicDBObject projection = new BasicDBObject();
@@ -64,8 +69,6 @@ public class SearchService {
         projection.put("title", 1);
         projection.put("summary", 1);
         projection.put("speakers", 1);
-
-        // db.talks.find({ "$text" : { "$search" : "mongo"}})
 
         return JSON.serialize(dbCollection.find(query, projection));
     }

@@ -15,6 +15,7 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Tag;
+import com.mongodb.DBCollection;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.assertj.core.util.VisibleForTesting;
@@ -27,6 +28,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Collections;
 
 
 @Api(value = "/tags", description = "Consultation de tags")
@@ -39,23 +41,40 @@ public class TagsService {
     @Inject
     private MongoCollection collection;
 
+    @Named("mongo/talks")
+    @Inject
+    private DBCollection dbCollection;
+
     @GET
     @Path("/")
     @ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associées",
             notes = "Le framework d'aggrégation doit être utilisé pour remonter les bonnes données"
     )
+    /**
+     * Le framework d'aggregation est un pipelline d'opérateurs
+     *
+     * La méthode all doit retourner le nombre de référence de chaque tag.
+     *
+     * <pre>
+     *     db.talks.aggregate([{$project: {tags: 1}},
+     *                           {$unwind: '$tags'},
+     *                           {$project: {tags: {$toLower: '$tags'}}},
+     *                           {$group: {_id: '$tags', count: {$sum:  1}}},
+     *                           { '$project' : { '_id' : 0, 'tag' : '$_id' , 'count' : 1 } },
+     *                           {$sort: {count: -1}})
+     * </pre>
+     *
+     * Les documents produits par mongo <strong>doivent</strong> être de la forme :
+     *
+     * <pre>
+     *     {
+     *         tag: "java",
+     *         count: 56
+     *     }
+     * </pre>
+     */
     public Iterable<Tag> all() {
-        // db.talks.aggregate([{$project: {tags: 1}},
-        //                     {$unwind: '$tags'},
-        //                     {$project: {tags: {$toLower: '$tags'}}},
-        //                     {$group: {_id: '$tags', count: {$sum:  1}}},
-        //                     {$sort: {count: -1}})
-        return collection.aggregate("{$project: {tags: 1}}")
-                .and("{$unwind: '$tags'}")
-                .and("{$project: {tags: {$toLower: '$tags'}}}")
-                .and("{$group: {_id: '$tags', count: {$sum:  1}}}")
-                .and("{$sort: {count: -1}}")
-                .as(Tag.class);
+        return Collections.emptyList();
     }
 
     @VisibleForTesting

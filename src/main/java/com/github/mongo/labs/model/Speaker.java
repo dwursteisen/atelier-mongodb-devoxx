@@ -29,7 +29,7 @@ public class Speaker  {
     private Geo geo;
 
 
-    public String getId() { return _id.toStringMongod(); }
+    public String getId() { return _id != null ? _id.toStringMongod() : null; }
     public void setId(String id) { _id = (id == null)? null : new ObjectId(id);  }
 
     public Name getName() {

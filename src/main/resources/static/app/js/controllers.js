@@ -206,6 +206,10 @@ function MapsCtrl($rootScope, $scope, $routeParams, $http, $location) {
                         // Je pense qu'il doit y avoir moyen de rationnaliser ce bout de javascript...
                         data.forEach(function (speaker) {
 
+                            // document invalide
+                            if(!speaker.geo) {
+                                return;
+                            }
 
                             markers.push(L.marker([speaker.geo.latitude, speaker.geo.longitude])
                                 .addTo(map)

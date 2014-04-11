@@ -51,8 +51,29 @@ public class GeoService {
             value = "Retrouve les speakers proche du point [longitude, latitude] (ex: 48.8670, 2.3521)",
             notes = "Un <b>index géolocalisé</b> doit être présent sur la collection des speakers"
     )
+    /**
+         La requête qui doit être utilisé pour récuperer les speakers autour d'un point géographique
+         est la suivante.
+
+
+        <pre>
+            db.speakers.find({ "geo" :
+                                    { "$near" :
+                                        { "$maxDistance" : 1500 ,
+                                          "$geometry" : {
+                                                "type" : "Point" ,
+                                                 "coordinates" : [ longitude , latitude]}
+                                        }
+                                    }
+                              })
+        </pre>
+
+        Elle peut être un peu complexe a construire avec des DBObjects. le driver mongodb
+        propose un builder pour écrire plus facilement ce type de requête.
+
+        Il est également possible d'écrire cette requête plus simplement avec Jongo
+     */
     public String near(@PathParam("longitude") double longitude, @PathParam("latitude") double latitude) {
-         // db.speakers.find({ "geo" : { "$near" : { "$maxDistance" : 1500 , "$geometry" : { "type" : "Point" , "coordinates" : [ lon , lat]}}}})
         DBObject query = BasicDBObjectBuilder.start()
                          .get();
         return JSON.serialize(speakers.find(query));
