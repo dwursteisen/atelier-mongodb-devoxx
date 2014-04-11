@@ -8,13 +8,12 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
 
   <style type="text/css"></style></head>
 
@@ -23,12 +22,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">
+          <a class="navbar-brand" href="#">
           	{"Développeur" : "Viens découvrir MongoDB"}
           </a>
           <div class="nav-collapse collapse">
@@ -52,10 +46,9 @@
 	  	  <ul style="list-style: decimal;">
 	  	  		<li>Décompresser le fichier fourni dans le repertoire d'installation</li>
 	  	  		<li>Créer le répertoire pour stocker la data</li>
-	  	  		<code>/Users/duchess/dbdata</code>
+	  	  		<code>/Users/workshop/dbdata</code>
 	  	  		<li>Démarrer la base de données</li>
-	  	  		<code>mongod --dbpath /Users/duchess/dbdata --rest --smallfiles</code>
-	  	  		<li>Allez sur <a href="http://localhost:28017/">http://localhost:28017/</a> (une <a href="/image/rest.png">page doit s'afficher</a>)</li>
+	  	  		<code>mongod --dbpath /Users/workshop/dbdata --rest --smallfiles</code>
 	  	  </ul>
 	  </section>
 	  
@@ -66,19 +59,19 @@
 	  	  		<code>mongo</code>
 	  	  		<li>Le shell est JavaScript
 					<pre>
-					> var sayHello = "Hello Mongo"
-					> sayHello
-					Hello Mongo</pre>
+> var sayHello = "Hello Mongo"
+> sayHello
+Hello Mongo</pre>
 	  	  		</li>
 	  	  		
-	  	  		<li>Explore l'objet "db" 
+	  	  		<li>Explore l'objet "db"
 	  	  			<pre>
-					> db
-					> db.help()</pre>
+> db
+> db.help()</pre>
 	  	  		</li>
 	  	  		
 	  	  		<li>Création d'une base de données</li>
-	  	  		ex : <code>use Duchess </code>
+	  	  		ex : <code>use workshop </code>
 	  	  		
 	  	  		<li>Insérer un document dans la collection things dans la base de données créée. Un idéntifinat unique sera créé pour toi. ObjectID</li>
 	  	  		ex : <code>db.things.insert({"name" : "table"}) </code>
@@ -112,36 +105,35 @@
 	  	  	
 	  	  	<li>Comprendre l'update. Assurez vous que la collection things est vide. Executez et observez pas par pas.</li>
             <pre>
-            // Insertion des 10
-	  	  	for(var i= 0; i<10; i++){
-	  	  		db.things.insert({"name" : "table", "size" : 12, date : new Date()});
-	  	  	}
-
-	  	  	db.things.find()
+// Insertion des 10
+for(var i= 0; i<10; i++){
+  db.things.insert({"name" : "table", "size" : 12, date : new Date()});
+}
+db.things.find()
             </pre>
 
 	  	  	Testez :
 
             <pre>
-	  	  	db.things.update({name : "table"}, {$set : {date : null}})
+db.things.update({name : "table"}, {$set : {date : null}})
             </pre>
 
 	  	  	Ensuite avec "multi" à true :
 
             <pre>
-	  	  	db.things.update({name : "table"}, {$set : {date : null}}, {multi: true})
-	  	  	db.things.find()
+db.things.update({name : "table"}, {$set : {date : null}}, {multi: true})
+db.things.find()
             </pre>
 
 	  	  	Ensuite faites un update d'un document avec le nom "chaise" :
             <pre>
-	  	  	db.things.update({name : "chaise"}, {$set : {date : new Date()}})
-	  	  	db.things.find()
+db.things.update({name : "chaise"}, {$set : {date : new Date()}})
+db.things.find()
             </pre>
 
 	  	  	Faites le même update avec "upsert" à true :
             <pre>
-	  	  	db.things.update({name : "chaise"}, {$set : {date : new Date()}}, {upsert: true})
+db.things.update({name : "chaise"}, {$set : {date : new Date()}}, {upsert: true})
             </pre>
 
 	  	  	
@@ -204,24 +196,133 @@
 	      
 	  </section>
 	  <section id="recherche-avancee">
-	      <h2>6. Recherche avancée sur la base de données : Le Framework d'aggregation</h2>
-	      
+	      <h2>6. Analyze des données : Le Framework d'aggregation</h2>
+          <p>
+             Depuis MongoDB 2.2, l'<i>Aggregation Framework</i> permet l'analyse de données en temps réel qui s'appuie sur les opérateurs natifs de la base de données.
+             (Contrairement au Map/Reduce qui s'appuie sur le moteur Javascript V8, et non abordé dans ce workshop)
+          </p>
+          <p>
+              Le calcul s'appuie sur la commande <code>db.aggregate([{/operation1/},{/operation2/}])</code> et renvoit une liste de documents.
+          </p>
+
+          <ul style="list-style: decimal;">
+              <li>
+                  Grouper les talks by "type":<br/>
+                  <code>db.talks.aggregate( [ { "$group" : { "_id" : "$type"  }  } ] );</code><br>
+                  <code>$group</code> : operateur de group, qui va grouper par l'attribut <code>_id</code> (obligatoire)<br/>
+                  <code>{ "_id" : "$type"  }</code> : selection de l'attribut sur lequel faire le group, qui est dans ce cas la valeur de l'attribut type, utiliser <code>$type</code><br/>
+                  <br/><br/>
+              </li>
+
+              <li>
+                  Compter le nombre de "talks" par "type": <br/>
+                  <code>db.talks.aggregate( [ { "$group" : { "_id" : "$type" , "count" : { $sum : 1 }  }  } ] );</code><br/>
+                  Il suffit ici d'ajouter une valeur dans le $group, cette valeur contient le nom de l'attribut a emmettre <code>count</code> et l'utilisation de l'operateur <code>$sum</code>.
+                  <br/><br/>
+              </li>
+
+              <li>
+                  Compter le nombre de "talks" par "type", trouver les 3 types les plus utilisés, et les classer de facon decroissantes <br/>
+                  Utiliser les opérateurs $sort et $limit dans le pipeline d'opérations.<br/>
+
+                  <button class="button" onclick="$('#agg-sol-1').toggle();">Afficher/Cacher la Solution</button><br/>
+                  <div id="agg-sol-1" style="display:none;" >
+                      <pre>
+  db.talks.aggregate( [
+    { "$group" : { "_id" : "$type" , "count" : { $sum : 1 }  }  },
+    {$sort : { "count" : -1 } },
+    { $limit : 3 }
+  ] );
+                      </pre>
+                  </div>
+
+                  <br/><br/>
+              </li>
+
+
+
+              <li>
+                  Compter le nombre de talk par "tags", et trouver les 3 tags plus utilisés <br/>
+                  Il faut commencer par utiliser l'opérateur <code>$unwind</code> sur les tags, pour créer une line par tag<br/>
+                  Utiliser également l'opérateur <code>$project</code> pour renommer le champ <code>_id</code> après le "group".<br/>
+
+                  <button class="button" onclick="$('#agg-sol-2').toggle();">Afficher/Cacher la Solution</button><br/>
+                  <div id="agg-sol-2" style="display:none;" >
+                      <pre>
+  db.talks.aggregate( [
+    { "$unwind" : "$tags" },
+    { "$group" : { "_id" : "$tags" , "count" : { $sum : 1 }  }  },
+    { "$project" : { "_id" : 0, "tag" : "$_id" , "count" : 1 } },
+    {$sort : { "count" : -1 } },
+    { $limit : 3 }
+  ] );
+                      </pre>
+                  </div>
+                  <br/><br/>
+              </li>
+
+
+
+              <li>
+                  Parmi les nouveautés de MongoDB 2.6, il est interessant de noter qu'il est possible d'utiliser la recherche full-text
+                  et les requetes géographiques dans l'Aggregation Framework. De nouveaux opérateurs  <code>$out</code> et <code>$redact</code>.
+                  L'opérateur <code>$out</code> permet de sauver le résultat dans une collection, par exemple <code>{ "$out" : "results" }</code>
+                  <br/><br/>
+                  Compter le nombre de talks parlant de "mobile", et par "tag", et sauver le resultat dans une collection "results".<br/>
+                  Il faut ensuite executer une requete find sur la collection : <code>db.results.find()</code><br/>
+
+                  <button class="button" onclick="$('#agg-sol-3').toggle();">Afficher/Cacher la Solution</button><br/>
+                  <div id="agg-sol-3" style="display:none;" >
+                      <pre>
+  db.talks.aggregate( [
+    { $match: { $text: { $search: "mobile" } } },
+    { "$unwind" : "$tags" },
+    { "$group" : { "_id" : "$tags" , "count" : { $sum : 1 }  }  },
+    { "$project" : { "_id" : 0, "tag" : "$_id" , "count" : 1 } },
+    {$sort : { "count" : -1 } },
+    { "$out" : "results" }
+  ] );
+                      </pre>
+                  </div>
+                  <br/><br/>
+              </li>
+
+
+          </ul>
+
+
+
+
 	      <h2>7. Recherche Géospatial</h2>
 	  </section>
 
-        <section id="recherche-fulltezt-devoxx">
+        <section id="fulltext-devoxx">
             <h2>8. Recherche Full Text Devoxx</h2>
             <ul style="list-style: decimal;">
                 <p>La version 2.6.x de MongoDB supporte maintenant la recherche "full text". Cette fonctionnalité était disponible en beta en 2.4.</p>
 
-                <li>Créez un index "text" sur les champs "title" et "summary" de la collection "talks"</li>
-                <code>db.talks.ensureIndex({ summary : "text", title : "text"  }, { default_language: "french" })</code>
+                <li>Créez un index "text" sur les champs "title" et "summary" de la collection "talks"<br/>
+                    <code>db.talks.ensureIndex({ summary : "text", title : "text"  }, { default_language: "french" })</code>
+                    <br/><br/>
+                </li>
 
-                <li>Recherchez les talks qui parlent de HTML5</li>
-                <code>db.talks.find( { $text : {$search :  "HTML5" } }  )</code>
 
-                <li>Recherchez les talks taggés en "java" et qui concernent "HTML5" </li>
-                <code>db.talks.find( / query ici /  )</code>
+                <li>Recherchez les talks qui parlent de HTML5<br/>
+                    <code>db.talks.find( { $text : {$search :  "HTML5" } }  )</code>
+                    <br/><br/>
+                </li>
+
+                <li>Recherchez les talks taggés en "java" et qui concernent HTML5 ou le Mobile, ne retourner que l'id et le titre</br>
+                    <code>db.talks.find( / query ici /  )</code><br/>
+
+                    <button class="button" onclick="$('#fulltext-devoxx-1').toggle();">Afficher/Cacher la Solution</button><br/>
+                    <div id="fulltext-devoxx-1" style="display:none;" >
+                      <pre>
+db.talks.find( { "tags" : "java" ,  "$text" : {"$search" : "mobile html5" } }, {"title":1} );
+                      </pre>
+                    </div>
+
+                </li>
 
 
             </ul>
@@ -230,5 +331,8 @@
 
 
     </div> <!-- /container -->
+
+
+    <script type="text/javascript" src="javascripts/jquery-2.1.0.min.js"></script>
 
 </body></html>
