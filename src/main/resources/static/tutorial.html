@@ -173,7 +173,7 @@ db.things.update({name : "chaise"}, {$set : {date : new Date()}}, {upsert: true}
 	      <h2>5. Recherche sur la base de données Devoxx</h2>
 	      <ul style="list-style: decimal;">
 	      	  
-	      	  <div class="alert alert-warn">Utilisez <strong>explain</strong> pour avoir l'information sur vos queries. Exemple : db.talks.find({"tags" : "java"}).explain()</div>
+	      	  <div class="alert alert-warning">Utilisez <strong>explain</strong> pour avoir l'information sur vos queries. Exemple : db.talks.find({"tags" : "java"}).explain()</div>
 	      	  
 	      	  <li>Combien de speakers ?</li>
 		      <code>db.speakers.count()</code>
