@@ -30,7 +30,6 @@ public class Speaker  {
 
 
     public String getId() { return _id.toStringMongod(); }
-    public void setId(String id) { _id = (id == null)? null : new ObjectId(id);  }
 
     public Name getName() {
         return name;

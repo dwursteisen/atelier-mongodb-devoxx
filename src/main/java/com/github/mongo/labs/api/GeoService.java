@@ -48,7 +48,7 @@ public class GeoService {
     @GET
     @Path("/{longitude}/{latitude}")
     @ApiOperation(
-            value = "Retrouve les speakers proche du point [longitude, latitude] (ex: 48.8670, 2.3521)",
+            value = "Retrouve les speakers proche du point [longitude, latitude] (ex: 2.3521, 48.8670)",
             notes = "Un <b>index géolocalisé</b> doit être présent sur la collection des speakers"
     )
     public String near(@PathParam("longitude") double longitude, @PathParam("latitude") double latitude) {

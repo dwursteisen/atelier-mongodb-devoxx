@@ -89,8 +89,11 @@ public class SpeakersService {
             notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontrée"
     )
     public String update(@PathParam("id") String id, Speaker speaker) {
-        speaker.setId(null);
-        jongoCollection.update("{_id: #}", new ObjectId(id)  ).with("{$set:#}", speaker);
+        jongoCollection.update("{_id: #}", new ObjectId(id)  ).with(speaker);
+
+        // ou
+
+        // DBObject modifier = new DBObject("$set", new DBObject("name", new DBObject("lastName", ...).put("firstName", ...));
         return id;
     }
 
