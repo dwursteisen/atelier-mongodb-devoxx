@@ -6,6 +6,18 @@ Dans cet atelier pratique, ludique et dynamique : Vous, développeur Java, venez
 
 On partira du shell, on passera à l'utilisation de drivers MongoDB en Java, puis on intégrera l'ensemble dans un site web.
 
+Installation de mongodb
+---
+
+Dézipper mongodb dans un répertoire. Puis ajouter le répertoire ```bin``` de mongodb dans votre PATH.
+Pour vérifier votre installaton :
+
+    mongo --version
+
+Lancer le serveur via maven
+----
+mvn exec:java -Dexec.mainClass="com.github.mongo.labs.Main"
+
 Création du repository local pour accès offline
 ---
 
@@ -22,6 +34,4 @@ Requirements
 - Maven
 - git
 
-Lancer le serveur via maven
-----
-mvn exec:java -Dexec.mainClass="com.github.mongo.labs.Main"
+

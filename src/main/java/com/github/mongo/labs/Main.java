@@ -70,7 +70,7 @@ public class Main {
         LOG.info("==========================================");
         LOG.info("L'application est disponible via :");
         LOG.info("==========================================");
-        LOG.info(">\t\thttp://localhost:8080/ \t\t\t\t\t\t(l'application web)");
+        LOG.info(">\t\thttp://localhost:8080/app \t\t\t\t\t\t(l'application web)");
         LOG.info(">\t\thttp://localhost:8080/tutorial.html \t\t(le plan de l'atelier)");
         LOG.info(">\t\thttp://localhost:8080/swagger \t\t\t\t(pour tester l'api REST)");
 
@@ -101,7 +101,7 @@ public class Main {
 
     private static void throwMongoNotStarted() {
         throw new RuntimeException("Oups ! mongodb n'est pas lancé ! " +
-                "Vous devez démarrer mongodb d'abord : mongod --dbpath=<repertoire> --smallfiles");
+                "Vous devez démarrer mongodb d'abord : mongod --dbpath=<repertoire> --smallfiles --rest");
     }
 
     private static void initSwagger() {
