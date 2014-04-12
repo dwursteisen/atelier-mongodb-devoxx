@@ -412,9 +412,11 @@ db.talks.find({ "_id" : "XWC-772"}, {"speakers":1}  ).pretty()
 
 
 
-	      <h2>8. Recherche Géospatial</h2>
+	      
 	  </section>
-
+		<section id="geo-devoxx">
+		<h2>8. Recherche Géospatial</h2>
+		</section>
         <section id="fulltext-devoxx">
             <h2>9. Recherche Full Text Devoxx</h2>
             <ul style="list-style: decimal;">
@@ -448,23 +450,30 @@ db.talks.find( { "tags" : "java" ,  "$text" : {"$search" : "mobile html5" } }, {
 
         </section>
         
-        <h1>MongoDB et JAVA in action</h1>
-
-        <div class="alert alert-info">
+        <section id="java-mongo">
+		<h2>10. Java et Mongo</h2>
+		<div class="alert alert-warning">
+          Partir de la base de données propre. Pour cela restorer la base de données devoxx :<br/>
+          
+          <code>> ./mongorestore /{VOTRE_PATH}/atelier-mongodb-devoxx/data/devoxx --db devoxx --drop</code>
+          
+        </div>
+		<div class="alert alert-info">
             Nous vous proposeons d'utiliser Mongo avec le driver native. Vous pouvez aussi utiliser un ODM (Object-Document-Mapping) comem Morphia 
       		ou Jongo, Spring Data etc. Nous avons mebarqué Jongo pour sa simplicité et facilité d'utilisation.
         </div>
         
-		<section id="fulltext-devoxx">
-            <h2>1. Le CRUD : Faites marcher les tests de la classe SpeakersServiceTest</h2>
+        <ul>
+        	<li>1. Le CRUD : Faites marcher les tests de la classe SpeakersServiceTest</li>
+        	    
+            <li>2. Recherche Full Texte : Faites marcher SearchServiceTest</li>
             
-            <h2>2. Recherche Full Texte : Faites marcher SearchServiceTest</h2>
-            
-            <h2>3. Aggregation Framework : Faites marcher les tests de la classe TagsServiceTest</h2>
+            <li>3. Aggregation Framework : Faites marcher les tests de la classe TagsServiceTest</li>
 
-            <h2>4. Geo Search : Faites marcher les tests de la classe GeoServiceTest</h2>
-            
-        </section>
+            <li>4. Geo Search : Faites marcher les tests de la classe GeoServiceTest</li>
+        
+        </ul>
+		</section>
 
     </div> <!-- /container -->
 	<br/><br/>
