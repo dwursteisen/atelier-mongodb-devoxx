@@ -14,74 +14,107 @@
 
 package com.github.mongo.labs.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.bson.BSONObject;
 import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.Id;
+import org.json.JSONObject;
 
-public class Speaker  {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
-    @Id
-    private ObjectId _id;
-    private Name name;
-    private String bio;
+public class Speaker {
 
-    @JsonIgnore
-    private Geo geo;
+	@Id
+	private ObjectId _id;
+	private Name name;
+	private String bio;
 
+	@JsonIgnore
+	private Geo geo;
 
-    public String getId() { return _id.toStringMongod(); }
+	public DBObject toBsonObject() {
+		BasicDBObject bsonObj = new BasicDBObject();
 
-    public Name getName() {
-        return name;
-    }
+		bsonObj.put("_id", _id == null ? new ObjectId() : _id);
+		BSONObject nameObj = new BasicDBObject("firstName", name.firstName).append("lastName", name.lastName);
+		bsonObj.put("name", nameObj);
+		bsonObj.put("bio", bio);
 
-    public void setName(Name name) {
-        this.name = name;
-    }
+		return bsonObj;
+	}
 
-    public String getBio() { return bio; }
+	public Speaker() {
 
-    public void setBio(String bio) { this.bio = bio; }
+	}
 
-    public void setGeo(Geo geo) { this.geo = geo; }
+	public Speaker(String json) {
+		JSONObject speaker = new JSONObject(json);
 
-    public Geo getGeo() {
-        return geo;
-    }
+		this.name = new Name(speaker.getJSONObject("name").optString("lastName"), speaker.getJSONObject("name").optString("firstName"));
+		this.bio = speaker.optString("bio");
+	}
 
-    public static class Name {
-        public String lastName;
-        public String firstName;
+	public String getId() {
+		return _id.toStringMongod();
+	}
 
-        @Override
-        public String toString() {
-            return "Name{" +
-                    "lastName='" + lastName + '\'' +
-                    ", firstName='" + firstName + '\'' +
-                    '}';
-        }
-    }
+	public Name getName() {
+		return name;
+	}
 
-    public static class Geo {
-        public double longitude;
-        public double latitude;
+	public void setName(Name name) {
+		this.name = name;
+	}
 
-        @Override
-        public String toString() {
-            return "Geo{" +
-                    "longitude=" + longitude +
-                    ", latitude=" + latitude +
-                    '}';
-        }
-    }
+	public String getBio() {
+		return bio;
+	}
 
-    @Override
-    public String toString() {
-        return "Speaker{" +
-                "_id=" + _id +
-                ", name=" + name +
-                ", bio='" + bio + '\'' +
-                ", geo=" + geo +
-                '}';
-    }
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+
+	public void setGeo(Geo geo) {
+		this.geo = geo;
+	}
+
+	public Geo getGeo() {
+		return geo;
+	}
+
+	public static class Name {
+		public String lastName;
+		public String firstName;
+
+		public Name() {
+
+		}
+
+		public Name(String lastName, String firstName) {
+			this.lastName = lastName;
+			this.firstName = firstName;
+		}
+
+		@Override
+		public String toString() {
+			return "Name{" + "lastName='" + lastName + '\'' + ", firstName='" + firstName + '\'' + '}';
+		}
+	}
+
+	public static class Geo {
+		public double longitude;
+		public double latitude;
+
+		@Override
+		public String toString() {
+			return "Geo{" + "longitude=" + longitude + ", latitude=" + latitude + '}';
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "Speaker{" + "_id=" + _id + ", name=" + name + ", bio='" + bio + '\'' + ", geo=" + geo + '}';
+	}
+
 }

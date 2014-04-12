@@ -14,6 +14,23 @@
 
 package com.github.mongo.labs.api;
 
+import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.bson.types.ObjectId;
+import org.jongo.MongoCollection;
+
 import com.github.mongo.labs.model.Speaker;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -21,16 +38,6 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import org.bson.types.ObjectId;
-import org.jongo.MongoCollection;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import java.util.regex.Pattern;
-
 
 @Api(value = "/speakers", description = "Gestion des speakers (recherche, m-a-j, etc)")
 @Path("/speakers")
@@ -38,94 +45,88 @@ import java.util.regex.Pattern;
 @Singleton
 public class SpeakersService {
 
+	@Named("mongo/speakers")
+	@Inject
+	DBCollection dbCollection;
 
-    @Named("mongo/speakers")
-    @Inject
-    private DBCollection dbCollection;
+	@Named("mongo/talks")
+	@Inject
+	DBCollection dbCollectionTalks;
 
-    @Named("mongo/talks")
-    @Inject
-    private DBCollection dbCollectionTalks;
+	@Named("jongo/speakers")
+	@Inject
+	MongoCollection jongoCollection;
 
-    @Named("jongo/speakers")
-    @Inject
-    private MongoCollection jongoCollection;
+	@GET
+	@Path("/")
+	@ApiOperation(value = "Retourne tous les speakers présent à Devoxx")
+	public String all() {
+		DBObject sort = new BasicDBObject();
+		sort.put("name.lastName", 1);
+		sort.put("name.firstName", 1);
+		return JSON.serialize(dbCollection.find().sort(sort));
+	}
 
-    @GET
-    @Path("/")
-    @ApiOperation(value = "Retourne tous les speakers présent à Devoxx")
-    public String all() {
-        DBObject sort = new BasicDBObject();
-        sort.put("name.lastName", 1);
-        sort.put("name.firstName", 1);
-        return JSON.serialize(dbCollection.find().sort(sort));
-    }
+	@GET
+	@Path("/{id}")
+	@ApiOperation(value = "Retrouve un speaker par son identifiant (ex: '5325b07a84ae2fdd99aa3ddb')", notes = "le service retourne un code 404 si non trouvé")
+	public String get(@PathParam("id") String id) {
+		ObjectId objId = new ObjectId(id);
+		BasicDBObject query = new BasicDBObject("_id", objId);
+		return JSON.serialize(dbCollection.findOne(query));
+	}
 
-    @GET
-    @Path("/{id}")
-    @ApiOperation(value = "Retrouve un speaker par son identifiant (ex: '5325b07a84ae2fdd99aa3ddb')",
-            notes = "le service retourne un code 404 si non trouvé"
-    )
-    public String get(@PathParam("id") String id) {
-        ObjectId objId = new ObjectId(id);
-        BasicDBObject query = new BasicDBObject("_id", objId);
-        return JSON.serialize(dbCollection.findOne(query));
-    }
+	@GET
+	@Path("/byname/{lastName}")
+	@ApiOperation(value = "Retrouve une liste de speakers par leur nom (ex: 'Aresti')", notes = "le service retourne un code 404 si non trouvé")
+	public String getByName(@PathParam("lastName") String lastName) {
+		BasicDBObject query = new BasicDBObject();
+		query.put("name.lastName", java.util.regex.Pattern.compile(lastName, Pattern.CASE_INSENSITIVE));
+		return JSON.serialize(dbCollection.find(query));
+	}
 
-    @GET
-    @Path("/byname/{lastName}")
-    @ApiOperation(value = "Retrouve une liste de speakers par leur nom (ex: 'Aresti')",
-            notes = "le service retourne un code 404 si non trouvé"
-    )
-    public String getByName(@PathParam("lastName") String lastName) {
-        BasicDBObject query = new BasicDBObject();
-        query.put("name.lastName", java.util.regex.Pattern.compile(lastName, Pattern.CASE_INSENSITIVE));
-        return JSON.serialize(dbCollection.find(query));
-    }
+	@PUT
+	@Path("/{id}")
+	@ApiOperation(value = "Mise à jour d'un speaker", notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontrée")
+	public String update(@PathParam("id") String id, Speaker speaker) {
 
-    @PUT
-    @Path("/{id}")
-    @ApiOperation(value = "Mise à jour d'un speaker",
-            notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontrée"
-    )
-    public String update(@PathParam("id") String id, Speaker speaker) {
-        jongoCollection.update("{_id: #}", new ObjectId(id)  ).with(speaker);
+		DBObject selector = new BasicDBObject("_id", new ObjectId(id));
+		BasicDBObject nameModifier = new BasicDBObject("lastName", speaker.getName().lastName).append("firstName", speaker.getName().firstName);
+		DBObject modifier = new BasicDBObject("$set", new BasicDBObject("name", nameModifier).append("bio", speaker.getBio()));
 
-        // ou
+		dbCollection.update(selector, modifier);
 
-        // DBObject modifier = new DBObject("$set", new DBObject("name", new DBObject("lastName", ...).put("firstName", ...));
-        return id;
-    }
+		return id;
+	}
 
-    @POST
-    @Path("/")
-    @ApiOperation(value = "Ajout d'un speaker",
-            notes = "Le service retourne un code 500 si une erreur a été rencontrée"
-    )
-    public String add(Speaker speaker) {
-        jongoCollection.save(speaker);
-        return speaker.getId();
-    }
+	@POST
+	@Path("/")
+	@ApiOperation(value = "Ajout d'un speaker", notes = "Le service retourne un code 500 si une erreur a été rencontrée")
+	public String add(Speaker speaker) {
 
-    @DELETE
-    @Path("/{id}")
-    @ApiOperation(value = "Suppression d'un speaker",
-            notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontrée"
-    )
-    public void delete(@PathParam("id") String id) {
+		DBObject bsonObj = speaker.toBsonObject();
+		dbCollection.insert(bsonObj);
 
-        // Suppression des speakers dans les talks
-        DBObject query = new BasicDBObject();
-        DBObject selector = new BasicDBObject( "ref", id );
-        DBObject speakers = new BasicDBObject( "speakers", selector );
-        DBObject operation = new BasicDBObject("$pull", speakers );
-        dbCollectionTalks.update(query, operation, false, true);
+		return bsonObj.get("_id").toString();
+	}
 
-        // suppression du speaker
-        ObjectId objId = new ObjectId(id);
-        BasicDBObject removeQuery = new BasicDBObject("_id", objId);
-        dbCollection.remove( removeQuery  );
+	@DELETE
+	@Path("/{id}")
+	@ApiOperation(value = "Suppression d'un speaker", notes = "Le service retourne un code 404 si non trouvé, 500 si une erreur a été rencontrée")
+	public void delete(@PathParam("id") String id) {
 
-    }
+		// Suppression des speakers dans les talks
+		DBObject query = new BasicDBObject();
+		DBObject selector = new BasicDBObject("ref", id);
+		DBObject speakers = new BasicDBObject("speakers", selector);
+		DBObject operation = new BasicDBObject("$pull", speakers);
+		dbCollectionTalks.update(query, operation);
+
+		// suppression du speaker
+		ObjectId objId = new ObjectId(id);
+		BasicDBObject removeQuery = new BasicDBObject("_id", objId);
+		dbCollection.remove(removeQuery);
+
+	}
 
 }

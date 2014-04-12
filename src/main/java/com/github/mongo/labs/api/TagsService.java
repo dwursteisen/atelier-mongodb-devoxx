@@ -72,8 +72,6 @@ public class TagsService {
     )
     public String countByTag() {
 
-        DBObject project0 = new BasicDBObject("$project", new BasicDBObject("tags", 1));
-
         DBObject unwind = new BasicDBObject("$unwind", "$tags");
         DBObject project1 = new BasicDBObject("$project", new BasicDBObject("tags", new BasicDBObject("$toLower", "$tags")  ));
 

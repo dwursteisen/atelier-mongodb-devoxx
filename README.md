@@ -29,9 +29,8 @@ Requirements
 ----
 
 - Java 7
-- Maven 3
 - Mongo 2.6
-- Maven
-- git
+- Git
+- Maven 3
 
 
