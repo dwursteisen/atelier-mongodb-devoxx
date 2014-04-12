@@ -451,17 +451,23 @@ db.talks.find( { "tags" : "java" ,  "$text" : {"$search" : "mobile html5" } }, {
         <h1>MongoDB et JAVA in action</h1>
 
         <div class="alert alert-info">
-            Nous vous proposeons d'utiliser Mongo avec le driver native pour
+            Nous vous proposeons d'utiliser Mongo avec le driver native. Vous pouvez aussi utiliser un ODM (Object-Document-Mapping) comem Morphia 
+      		ou Jongo, Spring Data etc. Nous avons mebarqué Jongo pour sa simplicité et facilité d'utilisation.
         </div>
         
 		<section id="fulltext-devoxx">
-            <h2>1. Le CRUD : Faites marcher les tests de la classe SpeakersServiceTest .</h2>
+            <h2>1. Le CRUD : Faites marcher les tests de la classe SpeakersServiceTest</h2>
             
+            <h2>2. Recherche Full Texte : Faites marcher SearchServiceTest</h2>
+            
+            <h2>3. Aggregation Framework : Faites marcher les tests de la classe TagsServiceTest</h2>
+
+            <h2>4. Geo Search : Faites marcher les tests de la classe GeoServiceTest</h2>
             
         </section>
 
     </div> <!-- /container -->
-
+	<br/><br/>
 
     <script type="text/javascript" src="javascripts/jquery-2.1.0.min.js"></script>
 

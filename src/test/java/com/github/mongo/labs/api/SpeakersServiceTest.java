@@ -2,34 +2,17 @@ package com.github.mongo.labs.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.net.UnknownHostException;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.github.mongo.labs.model.Speaker;
 import com.github.mongo.labs.model.Speaker.Name;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
 
-public class SpeakersServiceTest {
+public class SpeakersServiceTest extends AtelierTest {
 
 	private SpeakersService service;
-	private static DB db;
-
-	@BeforeClass
-	public static void getDB() {
-
-		try {
-			db = new MongoClient("localhost").getDB("devoxx");
-		} catch (UnknownHostException e) {
-			System.out.println("La base de données devoxx n'existe pas. Mongo est up ? ");
-		}
-	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -38,15 +21,6 @@ public class SpeakersServiceTest {
 		service.dbCollection = db.getCollection("speakers");
 
 		service.dbCollectionTalks = db.getCollection("talks");
-
-	}
-
-	@After
-	public void tearDown() throws Exception {
-
-		service.dbCollection = db.getCollection("speakers");
-		service.dbCollectionTalks = db.getCollection("talks");
-
 	}
 
 	@Test

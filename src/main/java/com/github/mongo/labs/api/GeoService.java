@@ -23,6 +23,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.jongo.MongoCollection;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
@@ -30,7 +32,6 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import org.jongo.MongoCollection;
 
 @Api(value = "/geo", description = "Recherche géolocalisé")
 @Path("/geo")
@@ -40,10 +41,10 @@ public class GeoService {
 
     @Named("jongo/speakers")
     @Inject
-    private MongoCollection collection;
+    MongoCollection collection;
     @Named("mongo/speakers")
     @Inject
-    private DBCollection speakers;
+    DBCollection speakers;
 
     @GET
     @Path("/{longitude}/{latitude}")
