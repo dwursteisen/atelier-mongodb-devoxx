@@ -50,9 +50,13 @@ public class TagsService {
 	@Path("/")
 	@ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associées. Ce endpoint utilise Jongo", notes = "Le framework d'aggrégation doit être utilisé pour remonter les bonnes données")
 	public Iterable<Tag> all() {
-		return collection.aggregate("{$project: {tags: 1}}").and("{$unwind: '$tags'}").and("{$project: {tags: {$toLower: '$tags'}}}")
-				.and("{$group: {_id: '$tags', count: {$sum:  1}}}").and("{ '$project' : { '_id' : 0, 'tag' : '$_id' , 'count' : 1 } }")
-				.and("{$sort: {count: -1}}").as(Tag.class);
+		return collection.aggregate("{$project: {tags: 1}}")
+				.and("{$unwind: '$tags'}")
+				.and("{$project: {tags: {$toLower: '$tags'}}}")
+				.and("{$group: {_id: '$tags', count: {$sum:  1}}}")
+				.and("{ '$project' : { '_id' : 0, 'tag' : '$_id' , 'count' : 1 } }")
+				.and("{$sort: {count: -1}}")
+				.as(Tag.class);
 	}
 
 	@GET
