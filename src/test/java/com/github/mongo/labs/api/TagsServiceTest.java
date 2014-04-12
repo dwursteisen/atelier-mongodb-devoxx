@@ -6,18 +6,14 @@ import org.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-
-public class TagsServiceTest {
+public class TagsServiceTest extends AtelierTest{
 
 	private TagsService service;
 
 	@Before
 	public void setUp() throws Exception {
 		service = new TagsService();
-
-		DB db = new MongoClient("localhost").getDB("devoxx");
+		
 		service.dbCollection = db.getCollection("talks");
 	}
 

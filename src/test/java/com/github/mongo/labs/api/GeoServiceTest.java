@@ -1,6 +1,7 @@
 package com.github.mongo.labs.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import org.json.JSONArray;
 import org.junit.Before;
@@ -40,8 +41,9 @@ public class GeoServiceTest extends AtelierTest {
 			
 			
 		}catch(MongoException ex){
-			System.out.println(ex);
 			System.out.print(" Did you forget you need the Geo Index ? db.speakers.ensureIndex({geo: \"2dsphere\"}");
+			System.out.println(ex);
+			fail("Ooooops Regarde la sortie de la console");
 		}
 		
 	}

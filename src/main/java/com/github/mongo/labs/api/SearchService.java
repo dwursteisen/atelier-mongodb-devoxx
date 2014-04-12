@@ -14,12 +14,6 @@
 
 package com.github.mongo.labs.api;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.util.JSON;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -29,6 +23,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.util.JSON;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+
 @Api(value = "/search", description = "Recherche fulltext")
 @Path("/search")
 @Produces(MediaType.APPLICATION_JSON)
@@ -37,7 +37,7 @@ public class SearchService {
 
     @Named("mongo/talks")
     @Inject
-    private DBCollection dbCollection;
+    DBCollection dbCollection;
 
     @GET
     @Path("/{term}")
