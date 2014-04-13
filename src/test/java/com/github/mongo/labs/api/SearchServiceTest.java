@@ -28,7 +28,7 @@ public class SearchServiceTest extends AtelierTest{
 			String searchJSON = service.search("future");
 			JSONArray searchResult = new JSONArray(searchJSON);
 			
-			assertThat(searchResult.length()).isEqualTo(13);
+			assertThat(searchResult.length()).isEqualTo(14);
 			assertThat(searchJSON).containsIgnoringCase("Java 8 Lambdas in the Stream");
 			
 		}catch(MongoException ex){

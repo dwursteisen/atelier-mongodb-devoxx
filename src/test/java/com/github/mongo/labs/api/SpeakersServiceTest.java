@@ -29,13 +29,13 @@ public class SpeakersServiceTest extends AtelierTest {
 		JSONArray speakers = new JSONArray(service.all());
 
 		assertThat(speakers.length()).isGreaterThanOrEqualTo(195);
-		assertThat(getFirstSpeakerName(speakers).optString("lastName")).isEqualToIgnoringCase("ANCELIN");
-		assertThat(getFirstSpeakerName(speakers).optString("firstName")).isEqualToIgnoringCase("Mathieu");
+		assertThat(getFirstSpeakerName(speakers).optString("lastName")).isEqualToIgnoringCase("AMMAR");
+		assertThat(getFirstSpeakerName(speakers).optString("firstName")).isEqualToIgnoringCase("Sofiane");
 	}
 
 	@Test
 	public void find_speaker_by_id() {
-		JSONObject speaker = new JSONObject(service.get("5325b07a84ae2fdd99aa3df6"));
+		JSONObject speaker = new JSONObject(service.get("534444a344ae6328612a69fb"));
 
 		assertThat(speaker.getJSONObject("name").optString("lastName")).isEqualTo("Aresti");
 	}

@@ -27,17 +27,17 @@ public class GeoServiceTest extends AtelierTest {
 	 * db.speakers.find({"geo" : {$near: 
 	 * 									{$maxDistance : 1500, 
 	 * 									 $geometry : {"type": "Point", 
-	 * 												  "coordinates" : [48.879099, 2.48169098]}}}})
+	 * 												  "coordinates" : [2.48169098, 48.879099]}}}})
 	 * */
 	@Test
 	public void can_search_by_geo(){
 		
 		try{
 			
-			JSONArray speakers = new JSONArray(service.near(48.879099, 2.48169098));
+			JSONArray speakers = new JSONArray(service.near(2.48169098, 48.879099));
 			
-			assertThat(speakers.length()).isEqualTo(21);
-			assertThat(speakers.getJSONObject(0).toString()).contains("Arnaud", "Bétrémieux");
+			assertThat(speakers.length()).isEqualTo(4);
+			assertThat(speakers.getJSONObject(0).toString()).contains("Jean-Baptiste", "Defard");
 			
 			
 		}catch(MongoException ex){

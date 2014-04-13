@@ -21,6 +21,6 @@ public class TagsServiceTest extends AtelierTest{
 	public void can_count_most_used_tags() {
 		JSONArray tags = new JSONArray(service.countByTag());
 		assertThat(tags.length()).isEqualTo(16);
-		assertThat(tags.getJSONObject(0).toString()).isEqualTo("{\"tags\":\"java\",\"count\":50}");
+		assertThat(tags.getJSONObject(0).toString()).isEqualTo("{\"tags\":\"java\",\"count\":51}");
 	}
 }
