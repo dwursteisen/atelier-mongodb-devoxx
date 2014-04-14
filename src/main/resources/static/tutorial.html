@@ -187,7 +187,7 @@ db.things.update({name : "chaise"}, {$set : {date : new Date()}}, {upsert: true}
 		      <li>Recherchez les talks qui contiennent le mot "NoSQL" dans la description. </li>
 		      
 		      <div class="alert alert-info">Tip : pour cette recherche on a besoin d'une expression regulière. Testez "NoSQL" et ensuite /NoSQL/ dans la valeur de la query</div>
-		      <li>Recherchez toutes les valeurs distinct des tags. Utilisez "distinct"</li>
+		      <li>Recherchez toutes les valeurs distinct des tags. Utilisez "distinct" : <code>db.talks.distinct(field, query)</code></li>
 		      
 		      <li>Recherchez en limitant à 5 les talks de type "Conference" en langue française triés par ordre alphabetique du titre. N'affichez que le titre et l'id dans la console</li>
 		      <div class="alert alert-info"> Tip : Utilisez l'aide db.talks.help()</div>
@@ -298,7 +298,7 @@ db.things.update({name : "chaise"}, {$set : {date : new Date()}}, {upsert: true}
                   <button class="button" onclick="$('#array-sol-5').toggle();">Afficher/Cacher la Solution</button><br/>
                   <div id="array-sol-5" style="display:none;" >
 <pre>
-db.talks.update({"_id" : "XWC-772"} , { "$pull" : { "speakers" : {"ref" : "5325b07b84ae2fdd99aa3e1a"}   }  });
+db.talks.update({"_id" : "XWC-772"} , { "$pull" : { "speakers" : {"ref" : "534444a444ae6328612a6a47"}   }  });
 
 // verifier
 db.talks.find({ "_id" : "XWC-772"}, {"speakers":1}  ).pretty()
@@ -389,6 +389,11 @@ db.talks.find({ "_id" : "XWC-772"}, {"speakers":1}  ).pretty()
                   <br/><br/>
                   Compter le nombre de talks parlant de "mobile", et par "tag", et sauver le resultat dans une collection "results".<br/>
                   Il faut ensuite executer une requete find sur la collection : <code>db.results.find()</code><br/>
+
+                  <div class="alert alert-warning">
+                     Un index fulltext peut être nécessaire pour cette requête ! Regardez la partie sur la recherche fulltext pour savoir comment créer cet index.</code>
+
+                  </div>
 
                   <button class="button" onclick="$('#agg-sol-3').toggle();">Afficher/Cacher la Solution</button><br/>
                   <div id="agg-sol-3" style="display:none;" >
