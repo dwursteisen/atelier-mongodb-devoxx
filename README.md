@@ -21,7 +21,7 @@ mvn exec:java -Dexec.mainClass="com.github.mongo.labs.Main"
 Création du repository local pour accès offline
 ---
 
-    mvn clean install dependency:go-offline -Dmaven.repo.local=repository -Pdev
+    mvn clean install dependency:go-offline -Dmaven.repo.local=repository -Pdev -Dmaven.test.skip=true
 
 + d'information ici : http://www.aheritier.net/launch-a-maven-build-with-a-temporary-empty-local-repository/
 
