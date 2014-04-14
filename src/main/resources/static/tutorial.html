@@ -421,8 +421,24 @@ db.talks.find({ "_id" : "XWC-772"}, {"speakers":1}  ).pretty()
 	  </section>
 		<section id="geo-devoxx">
 		<h2>8. Recherche Géospatial</h2>
-		
-		</section>
+            <ul style="list-style: decimal;">
+                <p>Il est possible de rechercher un ensemble de document disponible autour d'un point via Mongo.</p>
+
+                <li>Créez un index "2dsphere" sur le "geo" de la collection "speakers"<br/>
+                    <code>db.speakers.ensureIndex({ geo : "2dsphere"  })</code>
+                    <br/><br/>
+                </li>
+
+
+                <li>Recherchez les speakers qui habitent près de Devoxx France (Longitude : 2.340088 / latitude : 48.833439), le tout dans un rayon de 1500 mètres<br/>
+                    <code>db.speakers.find({"geo" : {$near: {$maxDistance : 1500, $geometry : {"type": "Point", "coordinates" : [2.340088, 48.833439]}}}})</code>
+
+                </li>
+
+
+            </ul>
+
+        </section>
         <section id="fulltext-devoxx">
             <h2>9. Recherche Full Text Devoxx</h2>
             <ul style="list-style: decimal;">
