@@ -2,6 +2,7 @@ package com.github.mongo.labs.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.jongo.Jongo;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -21,6 +22,8 @@ public class SpeakersServiceTest extends AtelierTest {
 		service.dbCollection = db.getCollection("speakers");
 
 		service.dbCollectionTalks = db.getCollection("talks");
+
+        service.jongoCollection = new Jongo(db).getCollection("speakers");
 	}
 
 	@Test
