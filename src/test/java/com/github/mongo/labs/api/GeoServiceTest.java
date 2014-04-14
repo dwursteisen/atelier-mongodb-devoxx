@@ -3,8 +3,11 @@ package com.github.mongo.labs.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import com.github.mongo.labs.api.com.github.mongo.labs.util.ExpectedQuery;
+import com.github.mongo.labs.api.com.github.mongo.labs.util.QueryCheckRule;
 import org.json.JSONArray;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.mongodb.MongoException;
@@ -12,7 +15,10 @@ import com.mongodb.MongoException;
 
 public class GeoServiceTest extends AtelierTest {
 
-	GeoService service = new GeoService();
+    @Rule
+    public final QueryCheckRule rule = new QueryCheckRule();
+
+    GeoService service = new GeoService();
 	
 	@Before
 	public void before(){
@@ -29,7 +35,8 @@ public class GeoServiceTest extends AtelierTest {
 	 * 									 $geometry : {"type": "Point", 
 	 * 												  "coordinates" : [2.48169098, 48.879099]}}}})
 	 * */
-	@Test
+    @ExpectedQuery(query = "db.speakers.find({\"geo\" : {\"$near\": {\"$maxDistance\" : 1500, \"$geometry\" : {\"type\": \"Point\", \"coordinates\" : [2.48169098, 48.879099]}}}})")
+ 	@Test
 	public void can_search_by_geo(){
 		
 		try{
