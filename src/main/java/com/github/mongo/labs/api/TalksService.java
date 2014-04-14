@@ -60,6 +60,10 @@ public class TalksService {
         BasicDBObject query = new BasicDBObject();
 
         BasicDBObject projection = new BasicDBObject();
+        projection.put("_id", 1);
+        projection.put("title", 1);
+        projection.put("summary", 1);
+        projection.put("speakers", 1);
 
         return JSON.serialize(dbCollection.find( query, projection));
     }
@@ -79,7 +83,7 @@ public class TalksService {
      * </pre>
      */
     public String get(@PathParam("id") String id) {
-        BasicDBObject query = new BasicDBObject();
+        BasicDBObject query = new BasicDBObject("_id", id);
         return JSON.serialize(dbCollection.findOne(query));
     }
 

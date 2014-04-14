@@ -74,7 +74,13 @@ public class TagsService {
      * </pre>
      */
     public Iterable<Tag> all() {
-        return Collections.emptyList();
+        return collection.aggregate("{$project: {tags: 1}}")
+                .and("{$unwind: '$tags'}")
+                .and("{$project: {tags: {$toLower: '$tags'}}}")
+                .and("{$group: {_id: '$tags', count: {$sum:  1}}}")
+                .and("{ '$project' : { '_id' : 0, 'tag' : '$_id' , 'count' : 1 } }")
+                .and("{$sort: {count: -1}}")
+                .as(Tag.class);
     }
 
     @GET
