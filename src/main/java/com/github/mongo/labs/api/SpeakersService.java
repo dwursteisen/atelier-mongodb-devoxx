@@ -14,6 +14,23 @@
 
 package com.github.mongo.labs.api;
 
+import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.bson.types.ObjectId;
+import org.jongo.MongoCollection;
+
 import com.github.mongo.labs.model.Speaker;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -21,16 +38,6 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import org.bson.types.ObjectId;
-import org.jongo.MongoCollection;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import java.util.regex.Pattern;
-
 
 @Api(value = "/speakers", description = "Gestion des speakers (recherche, m-a-j, etc)")
 @Path("/speakers")
@@ -38,18 +45,17 @@ import java.util.regex.Pattern;
 @Singleton
 public class SpeakersService {
 
-
     @Named("mongo/speakers")
     @Inject
-    private DBCollection dbCollection;
+    DBCollection dbCollection;
 
     @Named("mongo/talks")
     @Inject
-    private DBCollection dbCollectionTalks;
+    DBCollection dbCollectionTalks;
 
     @Named("jongo/speakers")
     @Inject
-    private MongoCollection jongoCollection;
+    MongoCollection jongoCollection;
 
     @GET
     @Path("/")
@@ -187,5 +193,7 @@ public class SpeakersService {
         // dbCollection.remove(query);
 
     }
+
+
 
 }

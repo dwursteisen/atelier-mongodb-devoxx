@@ -15,14 +15,12 @@
 package com.github.mongo.labs.api;
 
 import com.github.mongo.labs.model.Tag;
-import com.mongodb.DBCollection;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import org.assertj.core.util.VisibleForTesting;
 import org.jongo.MongoCollection;
 
 import javax.inject.Inject;
@@ -34,7 +32,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Collections;
 
-
 @Api(value = "/tags", description = "Consultation de tags")
 @Path("/tags")
 @Produces(MediaType.APPLICATION_JSON)
@@ -43,13 +40,10 @@ public class TagsService {
 
     @Named("jongo/talks")
     @Inject
-    private MongoCollection collection;
-
-
+    MongoCollection collection;
     @Named("mongo/talks")
     @Inject
-    private DBCollection dbCollection;
-
+    DBCollection dbCollection;
 
     @GET
     @Path("/")
@@ -83,18 +77,13 @@ public class TagsService {
         return Collections.emptyList();
     }
 
-
     @GET
     @Path("/native/")
-    @ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associées. Ce endpoint utilise le driver en native",
-            notes = "Le framework d'aggrégation doit être utilisé pour remonter les bonnes données"
-    )
+    @ApiOperation(value = "Retourne les tags les plus utilisés avec leurs statistiques associées. Ce endpoint utilise le driver en native", notes = "Le framework d'aggrégation doit être utilisé pour remonter les bonnes données")
     public String countByTag() {
 
-        DBObject project0 = new BasicDBObject("$project", new BasicDBObject("tags", 1));
-
         DBObject unwind = new BasicDBObject("$unwind", "$tags");
-        DBObject project1 = new BasicDBObject("$project", new BasicDBObject("tags", new BasicDBObject("$toLower", "$tags")  ));
+        DBObject project1 = new BasicDBObject("$project", new BasicDBObject("tags", new BasicDBObject("$toLower", "$tags")));
 
         DBObject groupFields = new BasicDBObject();
         groupFields.put("_id", "$tags");
@@ -113,9 +102,4 @@ public class TagsService {
         return JSON.serialize(dbCollection.aggregate(unwind, project1, group, project2, sort).results());
     }
 
-
-    @VisibleForTesting
-    public void setCollection(MongoCollection collection) {
-        this.collection = collection;
-    }
 }

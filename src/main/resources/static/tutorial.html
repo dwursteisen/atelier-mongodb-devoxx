@@ -195,8 +195,127 @@ db.things.update({name : "chaise"}, {$set : {date : new Date()}}, {upsert: true}
 	      </ul>
 	      
 	  </section>
+
+      <section id="advanced-update">
+          <h2>6. Manipulation de tableaux</h2>
+          <p>L'une des particularités de MongoDB est sa capacité a stocker des sous documents et tableaux de valeurs dans un seul document.
+             Par exemple vous pouvez voir qu'un talk contient 2 tableaux:
+             <ul>
+               <li>le champ <code>tags</code> qui contient une liste de Strings</li>
+               <li>le champ <code>speakers</code> qui contient une d'Objets</li>
+             </ul>
+<pre>
+{
+	"_id" : "CCA-308",
+	"type" : "Tools-in-Action",
+	"summary" : "... ... ...",
+	"lang" : "fr",
+	"speakers" : [
+		{
+			"name" : {
+				"lastName" : "Muller",
+				"firstName" : "Nicolas"
+			},
+			"ref" : "5325b07f84ae2fdd99aa3e52"
+		},
+		{
+			"name" : {
+				"lastName" : "Amico",
+				"firstName" : "Fabien"
+			},
+			"ref" : "5325b08184ae2fdd99aa3e5f"
+		}
+	],
+	"tags" : [
+		"java",
+		"docker",
+		"cloud",
+		"virtualisation"
+	]
+}
+</pre>
+          MongoDB fournit de nombreuses fonctionnalités permettant la manipulation des tableaux dans les documents.
+          </p>
+
+          <ul style="list-style: decimal;">
+              <li>
+                  Lister l'_id et le titre des talks qui contiennent le tag "dart" ou "clojure"<br/>
+                  Voir l'opérateur <code>$in</code>
+                  <br/>
+                  <button class="button" onclick="$('#array-sol-1').toggle();">Afficher/Cacher la Solution</button><br/>
+                  <div id="array-sol-1" style="display:none;" >
+                  <pre>db.talks.find( { "tags" : { "$in" :[  "dart", "clojure"  ] } }, {"title":1} );</pre>
+                  </div>
+                  <br/><br/>
+
+              </li>
+
+              <li>
+                  Ajouter le tag "cool" sur tous les talks ayant le tag "nosql"<br/>
+                  Voir l'opérateur <code>$push</code>, et <code>"multi"</code>!
+                  <br/>
+                  <button class="button" onclick="$('#array-sol-2').toggle();">Afficher/Cacher la Solution</button><br/>
+                  <div id="array-sol-2" style="display:none;" >
+                      <pre>db.talks.update( { tags : "nosql" }, { "$push" : {"tags" : "cool" } }, {"multi":true} );</pre>
+                      Le <code>$push</code> ajoute une entrée a la fin du tableau, et le <code>{"multi" : true}</code> signale
+                      au serveur de mettre à jour tous les documents.<br/>
+                      Notez que le <code>$push</code> ajoute l'entrée meme si elle est dejà presente, vous pouvez utiliser
+                      le <code>$addToSet</code> pour ne pas ajouter si l'objet est deja présent.
+                  </div>
+                  <br/><br/>
+              </li>
+
+
+              <li>
+                  Trier un tableau des tags dans les documents<br/>
+                  Voir l'opérateur <code>$sort</code>, associé au <code>$push</code>
+                  <br/>
+                  <button class="button" onclick="$('#array-sol-3').toggle();">Afficher/Cacher la Solution</button><br/>
+                  <div id="array-sol-3" style="display:none;" >
+                      <pre>db.talks.update( {} , {$push : { "tags" : {"$each" : [], "$sort" : 1  }   } } , {"multi":true} );</pre>
+                      Le <code>$each</code> permet d'ajouter plusieurs entrées dans un tableau, et le <code>$sort</code> de trier le tableau. (si vide seul le tri est fait)<br/>
+                  </div>
+                  <br/><br/>
+              </li>
+
+
+              <li>
+                  Supprimer le tag "cool" lorsqu'il est présent<br/>
+                  Voir l'opérateur <code>$pull</code>
+                  <br/>
+                  <button class="button" onclick="$('#array-sol-4').toggle();">Afficher/Cacher la Solution</button><br/>
+                  <div id="array-sol-4" style="display:none;" >
+                      <pre>db.talks.update( {"tags":"cool"} , {  "$pull" : { "tags" : "cool"  }  } , {"multi":true} );</pre>
+                  </div>
+                  <br/><br/>
+              </li>
+
+
+              <li>
+                  Supprimer le speaker "Tugdual Grall" du Hand's On Mongo<br/>
+                  L'<code>_id</code> est "XWC-772".
+                  <br/>
+                  <button class="button" onclick="$('#array-sol-5').toggle();">Afficher/Cacher la Solution</button><br/>
+                  <div id="array-sol-5" style="display:none;" >
+<pre>
+db.talks.update({"_id" : "XWC-772"} , { "$pull" : { "speakers" : {"ref" : "5325b07b84ae2fdd99aa3e1a"}   }  });
+
+// verifier
+db.talks.find({ "_id" : "XWC-772"}, {"speakers":1}  ).pretty()
+</pre>
+                  </div>
+                  <br/><br/>
+              </li>
+
+          </ul>
+
+
+
+      </section>
+
+
 	  <section id="recherche-avancee">
-	      <h2>6. Analyze des données : Le Framework d'aggregation</h2>
+	      <h2>7. Analyze des données : Le Framework d'aggregation</h2>
           <p>
              Depuis MongoDB 2.2, l'<i>Aggregation Framework</i> permet l'analyse de données en temps réel qui s'appuie sur les opérateurs natifs de la base de données.
              (Contrairement au Map/Reduce qui s'appuie sur le moteur Javascript V8, et non abordé dans ce workshop)
@@ -293,11 +412,14 @@ db.things.update({name : "chaise"}, {$set : {date : new Date()}}, {upsert: true}
 
 
 
-	      <h2>7. Recherche Géospatial</h2>
+	      
 	  </section>
-
+		<section id="geo-devoxx">
+		<h2>8. Recherche Géospatial</h2>
+		
+		</section>
         <section id="fulltext-devoxx">
-            <h2>8. Recherche Full Text Devoxx</h2>
+            <h2>9. Recherche Full Text Devoxx</h2>
             <ul style="list-style: decimal;">
                 <p>La version 2.6.x de MongoDB supporte maintenant la recherche "full text". Cette fonctionnalité était disponible en beta en 2.4.</p>
 
@@ -328,10 +450,34 @@ db.talks.find( { "tags" : "java" ,  "$text" : {"$search" : "mobile html5" } }, {
             </ul>
 
         </section>
+        
+        <section id="java-mongo">
+		<h2>10. Java et Mongo</h2>
+		<div class="alert alert-warning">
+          Partir de la base de données propre. Pour cela restorer la base de données devoxx :<br/>
+          
+          <code>> ./mongorestore /{VOTRE_PATH}/atelier-mongodb-devoxx/data/devoxx --db devoxx --drop</code>
+          
+        </div>
+		<div class="alert alert-info">
+            Nous vous proposeons d'utiliser Mongo avec le driver native. Vous pouvez aussi utiliser un ODM (Object-Document-Mapping) comem Morphia 
+      		ou Jongo, Spring Data etc. Nous avons mebarqué Jongo pour sa simplicité et facilité d'utilisation.
+        </div>
+        
+        <ul>
+        	<li>1. Le CRUD : Faites marcher les tests de la classe SpeakersServiceTest</li>
+        	    
+            <li>2. Recherche Full Texte : Faites marcher SearchServiceTest</li>
+            
+            <li>3. Aggregation Framework : Faites marcher les tests de la classe TagsServiceTest</li>
 
+            <li>4. Geo Search : Faites marcher les tests de la classe GeoServiceTest</li>
+        
+        </ul>
+		</section>
 
     </div> <!-- /container -->
-
+	<br/><br/>
 
     <script type="text/javascript" src="javascripts/jquery-2.1.0.min.js"></script>
 
