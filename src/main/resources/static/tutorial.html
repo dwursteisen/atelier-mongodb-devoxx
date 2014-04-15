@@ -94,7 +94,7 @@ Hello Mongo</pre>
 	  	  	db.things.insert({"_id" : "123", "name" : "table", "size" : 12, date : new Date()})
 	  	  	</code>
 	  	  	<li>Find by Id</li>
-	  	  	<code>db.things.findOne("_id": "123")</code><br/>
+	  	  	<code>db.things.findOne({"_id": "123"})</code><br/>
 	  	  	<code>db.things.find({"_id" : "123"})</code>
             <li>Nombre de document dans une collection</li>
             <code>db.things.count()</code>
@@ -267,7 +267,7 @@ db.things.update({name : "chaise"}, {$set : {date : new Date()}}, {upsert: true}
 
 
               <li>
-                  Trier un tableau des tags dans les documents<br/>
+                  Trier les tags dans les documents de la collection talks<br/>
                   Voir l'opérateur <code>$sort</code>, associé au <code>$push</code>
                   <br/>
                   <button class="button" onclick="$('#array-sol-3').toggle();">Afficher/Cacher la Solution</button><br/>
@@ -384,7 +384,7 @@ db.talks.find({ "_id" : "XWC-772"}, {"speakers":1}  ).pretty()
 
               <li>
                   Parmi les nouveautés de MongoDB 2.6, il est interessant de noter qu'il est possible d'utiliser la recherche full-text
-                  et les requetes géographiques dans l'Aggregation Framework. De nouveaux opérateurs  <code>$out</code> et <code>$redact</code>.
+                  et les requetes géographiques dans l'Aggregation Framework. Deux nouveaux opérateurs sont disponibles :<code>$out</code> et <code>$redact</code>.
                   L'opérateur <code>$out</code> permet de sauver le résultat dans une collection, par exemple <code>{ "$out" : "results" }</code>
                   <br/><br/>
                   Compter le nombre de talks parlant de "mobile", et par "tag", et sauver le resultat dans une collection "results".<br/>
