@@ -186,11 +186,12 @@ public class SpeakersService {
     public void delete(@PathParam("id") String id) {
 
         // Suppression des speakers dans les talks
-        DBObject query = new BasicDBObject();
-        // dbCollectionTalks.update(query, modifier)
+        DBObject queryTalks = new BasicDBObject();
+        // dbCollectionTalks.update(queryTalks, modifier, false, true)
 
+        DBObject querySpeaker = new BasicDBObject();
         // suppression du speaker
-        // dbCollection.remove(query);
+        // dbCollection.remove(querySpeaker);
 
     }
 
