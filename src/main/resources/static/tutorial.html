@@ -73,8 +73,8 @@ Hello Mongo</pre>
 	  	  		<li>Création d'une base de données</li>
 	  	  		ex : <code>use workshop </code>
 	  	  		
-	  	  		<li>Insérer un document dans la collection things dans la base de données créée. Un idéntifinat unique sera créé pour toi. ObjectID</li>
-	  	  		ex : <code>db.things.insert({"name" : "table"}) </code>
+	  	  		<li>Insérer un document dans la collection things dans la base de données créée. Un identifiant unique sera créé pour toi. ObjectID</li>
+	  	  		ex : <code>db.things.insert({"name" : "bureau"}) </code>
 	  	  		
 	  	  		<li>Lister un document avec findOne</li>
 	  	  		ex : <code>db.things.findOne()</code>
@@ -91,7 +91,7 @@ Hello Mongo</pre>
 	  	  <ul style="list-style: decimal;">
 	  	  	<li>Insertion d'un document</li>
 	  	  	<code>
-	  	  	db.things.insert({"_id" : "123", "name" : "table", "size" : 12, date : new Date()})
+	  	  	db.things.insert({"_id" : "123", "name" : "bureau", "size" : 12, date : new Date()})
 	  	  	</code>
 	  	  	<li>Find by Id</li>
 	  	  	<code>db.things.findOne({"_id": "123"})</code><br/>
@@ -107,7 +107,7 @@ Hello Mongo</pre>
             <pre>
 // Insertion des 10
 for(var i= 0; i<10; i++){
-  db.things.insert({"name" : "table", "size" : 12, date : new Date()});
+  db.things.insert({"name" : "bureau", "size" : 12, date : new Date()});
 }
 db.things.find()
             </pre>
@@ -115,13 +115,13 @@ db.things.find()
 	  	  	Testez :
 
             <pre>
-db.things.update({name : "table"}, {$set : {date : null}})
+db.things.update({name : "bureau"}, {$set : {date : null}})
             </pre>
 
 	  	  	Ensuite avec "multi" à true :
 
             <pre>
-db.things.update({name : "table"}, {$set : {date : null}}, {multi: true})
+db.things.update({name : "bureau"}, {$set : {date : null}}, {multi: true})
 db.things.find()
             </pre>
 
