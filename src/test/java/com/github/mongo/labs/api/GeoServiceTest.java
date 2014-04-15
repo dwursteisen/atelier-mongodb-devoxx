@@ -48,7 +48,7 @@ public class GeoServiceTest extends AtelierTest {
 			
 			
 		}catch(MongoException ex){
-			System.out.print(" Did you forget you need the Geo Index ? db.speakers.ensureIndex({geo: \"2dsphere\"}");
+			System.out.print(" Did you forget you need the Geo Index ? db.speakers.ensureIndex({geo: \"2dsphere\"})");
 			System.out.println(ex);
 			fail("Ooooops Regarde la sortie de la console");
 		}

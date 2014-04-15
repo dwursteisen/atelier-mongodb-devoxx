@@ -2,10 +2,16 @@ package com.github.mongo.labs.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBObject;
 import org.jongo.Jongo;
+import org.jongo.MongoCollection;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.github.mongo.labs.model.Speaker;
@@ -15,23 +21,38 @@ public class SpeakersServiceTest extends AtelierTest {
 
 	private SpeakersService service;
 
+
+    @BeforeClass
+    public static void backupSpeakers(){
+        Iterable<Speaker> allSpeakers = jongo.getCollection("speakers").find().as(Speaker.class);
+        MongoCollection speakersBackup = jongo.getCollection("speakersBackup");
+        speakersBackup.remove();
+        while(allSpeakers.iterator().hasNext())  speakersBackup.save(allSpeakers.iterator().next());
+
+    }
+
 	@Before
 	public void setUp() throws Exception {
 		service = new SpeakersService();
-
 		service.dbCollection = db.getCollection("speakers");
-
 		service.dbCollectionTalks = db.getCollection("talks");
+        service.jongoCollection = jongo.getCollection("speakers");
+    }
 
-        service.jongoCollection = new Jongo(db).getCollection("speakers");
-	}
+    @After
+    public void tearDown() throws Exception {
+        Iterable<Speaker> speakersBackup =  jongo.getCollection("speakersBackup").find().as(Speaker.class);
+        MongoCollection allSpeakers = jongo.getCollection("speakers");
+        allSpeakers.remove();
+        while(speakersBackup.iterator().hasNext())  allSpeakers.save(speakersBackup.iterator().next());
+    }
 
 	@Test
 	public void find_all_speakers_sorted_by_lastName_and_name() {
 
 		JSONArray speakers = new JSONArray(service.all());
 
-		assertThat(speakers.length()).isGreaterThanOrEqualTo(195);
+		assertThat(speakers.length()).isGreaterThanOrEqualTo(208);
 		assertThat(getFirstSpeakerName(speakers).optString("lastName")).isEqualToIgnoringCase("AMMAR");
 		assertThat(getFirstSpeakerName(speakers).optString("firstName")).isEqualToIgnoringCase("Sofiane");
 	}
@@ -81,12 +102,7 @@ public class SpeakersServiceTest extends AtelierTest {
 		service.delete(id);
 	}
 
-	@Test
-	public void can_delete_speaker_and_his_talks() {
-		// TODO
-	}
-
-	private static final JSONObject getFirstSpeakerName(JSONArray speakers) {
+    private static final JSONObject getFirstSpeakerName(JSONArray speakers) {
 		return speakers.getJSONObject(0).getJSONObject("name");
 	}
 }
