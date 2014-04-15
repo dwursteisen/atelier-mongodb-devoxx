@@ -14,23 +14,6 @@
 
 package com.github.mongo.labs.api;
 
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import org.bson.types.ObjectId;
-import org.jongo.MongoCollection;
-
 import com.github.mongo.labs.model.Speaker;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -38,6 +21,15 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import org.bson.types.ObjectId;
+import org.jongo.MongoCollection;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.regex.Pattern;
 
 @Api(value = "/speakers", description = "Gestion des speakers (recherche, m-a-j, etc)")
 @Path("/speakers")
@@ -120,7 +112,7 @@ public class SpeakersService {
 		DBObject selector = new BasicDBObject("ref", id);
 		DBObject speakers = new BasicDBObject("speakers", selector);
 		DBObject operation = new BasicDBObject("$pull", speakers);
-		dbCollectionTalks.update(query, operation);
+		dbCollectionTalks.update(query, operation, false, true);
 
 		// suppression du speaker
 		ObjectId objId = new ObjectId(id);
